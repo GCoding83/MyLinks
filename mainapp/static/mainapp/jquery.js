@@ -17,9 +17,15 @@ $(function(){
 	});
 });
 
+/*When user clicks on the bar with the logo, open the bottom box ("box-bottom-open")*/
 $(function(){
 	$('.box-bottom').on('click', function(){	
 		$(this).next().toggle(100);
+		/*Ensure that the bottom-right box (the one with the citation abstracts) gets closed if the bottom-box (the one with the logo) is closed*/
+		var box = $(this).siblings('.box-bottom-right-open');
+		if ($(box).is(':visible')){
+			$(box).hide();
+		}
 	});
 });
 
@@ -28,7 +34,6 @@ $(function(){
 		$(this).prev().toggle(100);
 	});
 });
-
 
 $(function(){
 	$('.nested-citations').on('click', function(){	
