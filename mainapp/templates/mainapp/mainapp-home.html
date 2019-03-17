@@ -1,0 +1,389 @@
+{% extends "mainapp/base.html" %}
+{% block content %}
+
+<!--My practice database:
+	Pub order: 
+	1) Kant
+		a.Hume, b. Descartes
+	2) Hume
+		a. Descartes
+	3) Descartes
+		a. Aristotle
+	4) Hume et al. (Impossible book)
+		a. Descartes, b. Hume, c. Kant
+	5) Singer
+		a. Hume et al. (Impossible book)
+	6) Aristotle
+		none
+-->
+
+<!-- 
+kant = publications.first()
+***kant.citations.all()
+		>>><QuerySet [<Publication: Impossible Modern Book - B>]>
+		PERSO: Hume et al., Impossible Book
+		EXPL: "citations" gives you the authors that cite Kant
+		
+		VS
+
+***kant.citation.all()
+		>>><QuerySet [<Publication: An Enquiry Concerning Human Understanding - B>, <Publication: Discours de la Methode - B>]>
+		PERSO: Hume, Descartes
+		EXPL: "citation" gives you Kant's own citations
+		
+		VS
+
+***kant.cited_pubs.all()
+		>>><QuerySet [<CitationMetadata: Citer: Impossible Modern Book; Cited: Critique of Pure Reason>]>
+		EXPL: "cited_pubs" gives you the sets in which Kant is the CITED
+
+		VS
+
+***kant.citer_pubs.all()
+		>>><QuerySet [<CitationMetadata: Citer: Critique of Pure Reason; Cited: An Enquiry Concerning Human Understanding>, <CitationMetadata: Citer: Critique of Pure Reason; Cited: Discours de la Methode>]>
+		EXPL: "citer_pubs" gives you the sets in which Kant is the CITER
+-->
+
+
+<!-- Inside for-loop for publication:
+	FIRST AUTHOR OF PUB: 
+		publication.author.first
+	LAST NAME OF FIRST AUTHOR OF PUB: 
+		publication.author.first.last_name
+	PYB YEAR:
+		publication.year
+	FIRST CITATION:
+		publication.citation.first
+	LAST NAME OF FIRST AUTHOR OF FIRST CITATION:
+		publication.citation.first.author.first.last_name
+	YEAR OF FIRST CITED_PUB:
+		publication.citation.first.year
+	TITLE OF FIRST CITED_PUB:
+		publication.citation.first.title
+	DESCRIPTION OF FIRST CITED_PUB:
+		publication.cited_pubs.first.description
+	COUNT OF AUTHORS IN A PUBLICATION:
+		publication.author.all.count 
+-->
+<!-- 
+	{% for publication in publications %}
+		<div>
+		{{ publication.title }}
+	 		{% for citer in publication.cited_pubs.all %}		
+			<div id='{{ citer.id }}' class="clickedclass">
+				Cite first author's last name
+				 {{ citer.citer_pub.author.first.last_name }}
+			{% endfor %}
+			</div>
+			<br>
+		</div>
+	{% endfor %}
+
+	<div id="i">
+		<div class="hideorshow">
+		Yo
+		</div>
+	</div>
+ -->
+
+<!-- 
+	{% for publication in publications %}
+		<div>
+		{{ publication.title }}
+	 		{% for citer in publication.cited_pubs.all %}		
+			<div id='{{ citer.id }}' class="clickedclass">
+				 {{ citer.citer_pub.author.first.last_name }}
+			{% endfor %}
+			</div>
+			<br>
+		</div>
+	{% endfor %}
+
+	{% for publication in publications %}
+		{% for citer in publication.cited_pubs.all %}
+			<div id='info{{ citer.id }}' class="myabstract">Abstract: {{ citer.cited_pub.abstract }}</div><br>
+		{% endfor %}
+	{% endfor %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+ -->
+
+
+<!-- myclass = Class.objects.all() 
+	 myclass.get(id=8) -->
+
+<!-- <div class="test-flex-main-container">
+	main container
+	<div class="test-flex-inner-container">
+		inner container
+		<div class="test-flex-item">
+			flex items
+		</div>
+	</div>
+</div>
+ -->
+
+<!-- Real code -->
+{% for publication in publications %}
+<article class="media content-section">
+	<div class="media-body">
+
+		<!-- The main grid container starts here -->
+		<div class="grid-container">
+
+			<!-- Box top when open -->
+			<div class="box-top-open">
+				<p class="open-header">
+					<!-- Publication author and year - same procedure as in the main box regarding author count-->
+					{{ publication.author.first.last_name }}
+					{% if publication.author.all.count == 2 %}
+						and {{ publication.author.last.last_name }}
+					{% elif publication.author.all.count > 2 %} et al.
+					{% endif %}
+						({{ publication.year }}) is cited by:
+				</p>
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<p class='flex-container'>
+					<!-- For each citer_pub that cites the cited_pub (i.e. our publication) -->
+		 			{% for citer in publication.cited_pubs.all %}		
+						<div class="nested-citations">
+							<!-- Cite first author's last name -->
+							 {{ citer.citer_pub.author.first.last_name }}
+							 <!-- Then, if there are 2 authors, cite both -->
+							 {% if citer.citer_pub.author.all.count == 2 %}
+							 	and {{ citer.citer_pub.author.last.last_name }}
+							 <!-- Or, if there are more than two authors, add "et al." -->
+							 {% elif citer.citer_pub.author.all.count > 2 %}
+							 	et al.
+							 {% endif %}
+							 <!-- Year of publication -->
+							 ({{ citer.citer_pub.year }}); 
+						</div>
+						<div class="citation-description">
+							{{ citer.description }}
+						</div>	
+					{% endfor %}
+				</p>	
+			</div>
+
+			<!-- The top part where the user clicks to get all the citations -->
+			<div class="box-top"> 
+				<div class="logo-top-bottom">{% load static %}
+					<!-- Add media like this:  -->
+					{% load static %}
+					<img src="{% static "../media/site_pics/logos/open-quotes logo.png" %}" alt="Logo" height='20' width='20'>
+				</div>
+			</div>
+
+
+			<!-- The cnter box, where the main info of the citation appears -->	
+			<div class="box-center">
+				 <span class="author"><a href="#">
+				 		<!-- Cite first author's last name -->
+						{{ publication.author.first.last_name }}</a>
+						<!-- Then, if there are 2 authors, cite both -->
+						{% if publication.author.all.count == 2 %}and <a href='#'>{{ publication.author.last.last_name }}</a>
+						<!-- Or, if there are more than two authors, add "et al." -->
+						{% elif publication.author.all.count > 2 %} et al.
+						{% endif %}
+				 </span>
+				 <!-- Publication year -->
+				 <span class="year"> ({{ publication.year }})
+				 </span>
+				 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
+				 {% if  publication.pub_type == 'A' %}
+				  <div class="publication-title"> 
+				 "{{ publication.title }}" </div> <div class="journalname"><em><a href="#">{{ publication.journal }}</a></em></div>
+				 <!-- For Books, put book title in italics -->
+				 {% elif publication.pub_type == 'B' %}
+				  <div class="publication-title"><em>{{ publication.title }}</em></div>
+				  <!-- For other Publication types, don't do anything special -->
+				 {% else %}
+				  <div class="publication-title"> {{ publication.title }}</div>
+				 {% endif %}
+			</div>
+			
+			<!-- The left box when open, where all the details of the publciation appear -->
+			<div class="box-left-open">
+				<header class="open-header"> 
+				Details for {{ publication.author.first.last_name }}
+					{% if publication.author.all.count == 2 %}
+						and {{ publication.author.last.last_name }}
+					{% elif publication.author.all.count > 2 %} et al.
+					{% endif %}
+						({{ publication.year }})</header>
+					<div>
+						Title: {{ publication.title }}
+						<br>Authors: 
+						{% for author in publication.author.all %}
+							{% if author.first_name and author.middle_name %}
+								{{ author.first_name }} {{ author.middle_name }} {{ author.last_name }},
+							{% elif author.first_name %}
+								{{ author.first_name }} {{ author.last_name }}, 
+							{% elif author.middle_name %}
+								{{ author.middle_name }} {{ author.last_name }}, 
+							{% else %}
+								{{ author.last_name }}, 
+							{% endif %}
+						{% endfor %}
+						<br>
+						Year: {{ publication.year }}
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						Type: {{ publication.get_pub_type_display }}
+						{% if publication.pub_type == 'A'%}
+							<br>Journal: {{ publication.journal.journal_name }}
+							<br>Volume: {{ publication.journal.volume }}
+							<br>Issue: {{ publication.journal.issue }}
+							<br><small>More</small>
+						{% endif %}
+					</div>
+			</div>
+
+			<!-- The left part where the user clicks to get all the publication details -->
+			<div class="box-left">
+				{% load static %}
+				<img class="inverted" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
+			</div>
+
+			<!-- The right part where the user clicks to get the Abstract -->
+			<div class="box-right">
+				<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height=20 width='20'>
+			</div>
+
+			<!-- The rigt box when open, where the Abstract appears -->
+			<article class="box-right-open">
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<header class="open-header">Abstract for
+				{{ publication.author.first.last_name }}
+					{% if publication.author.all.count == 2 %}
+						and {{ publication.author.last.last_name }}
+					{% elif publication.author.all.count > 2 %} et al.
+					{% endif %}
+						({{ publication.year }})</header>
+				<div>
+					{{ publication.abstract }}
+				</div>
+			</article>
+
+
+			<!-- The bottom part where the user clicks to get the citations -->
+			<div class="box-bottom">
+				<div class="logo-top-bottom">{% load static %}
+					<img src="{% static "../media/site_pics/logos/quotes2.png" %}" alt="Logo" height='20' width='20'>
+				</div>
+			</div>
+
+			<!-- The top part where the user clicks to get all the citations -->
+			<div class="box-bottom-open">
+				<p class="open-header">
+					<!-- Publication author and year - same procedure as in the main box regarding author count-->
+					{{ publication.author.first.last_name }}
+					{% if publication.author.all.count == 2 %}
+						and {{ publication.author.last.last_name }}
+					{% elif publication.author.all.count > 2 %} et al.
+					{% endif %}
+						({{ publication.year }}) cites:
+				</p>
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<p class='flex-container'>
+					<!-- For each cited_pub cited by the citer_pub (i.e. our publication) -->
+		 			{% for cited in publication.citer_pubs.all %}		
+						<div class="nested-citations">
+						<!-- Cite first author's last name -->
+						 {{ cited.cited_pub.author.first.last_name }}
+						 <!-- Then, if there are 2 authors, cite both -->
+						 {% if cited.cited_pub.author.all.count == 2 %}
+						 	and {{ cited.cited_pub.author.last.last_name }}
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						 {% elif cited.cited_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %}
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }}); 
+						</div>
+						<div id="{{ cited.id }}" class="citation-description">
+						{{ cited.description }}
+						</div>
+
+					<!-- This is the hidden box that will show the Abstract of the citation if the user wants to see it -->
+					<!-- <div class="box-bottom-right-open">
+						<div class="open-header"> -->
+						<!-- Cite first author's last name -->
+						<!--  Abstract for {{ cited.cited_pub.author.first.last_name }} -->
+						 <!-- Then, if there are 2 authors, cite both -->
+					<!-- 	 {% if cited.cited_pub.author.all.count == 2 %}
+						 	and {{ cited.cited_pub.author.last.last_name }} -->
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						<!--  {% elif cited.cited_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %} -->
+						 <!-- Year of publication -->
+<!-- 						 ({{ cited.cited_pub.year }})
+ -->						
+						<!-- The abstract -->
+					<!-- 	 <div>
+							{{ cited.cited_pub.abstract }}
+						</div>
+					</div> -->
+					{% endfor %}
+				</p>
+			</div>
+			<!-- This is the hidden box that will show the Abstract of the citation if the user wants to see it 
+			
+			(for publication in publications)
+				div class: box-bottom-right-open IS ORIGINALLY HIDDEN
+				if box-bottom-right-open is HIDDEN
+					if you click on the description of one of publication's cited pubs
+						box-bottom-right-open has the abstract of this cited pub
+						box-bottom-right-open BECOMES VISIBLE
+				else (i.e. if box-bottom-right-open is VISIBLE)
+					if you click on the description that is CURRENTLY SHOWING in box-bottom-right-open
+						box-bottom-right-open CLOSES
+					elif you click on the description of ANOTHER ONE of publication's cited pubs
+						box-bottom-right-open CLOSES
+						box-bottom-right-open has the abstract of the new cited pub
+						box-bottom-right-open BECOMES VISIBLE
+
+
+
+
+				
+			-->
+			<div class="box-bottom-right-open">
+				{% for cited in publication.citer_pubs.all %}
+					<p id="author{{ cited.id }}" class="bottom-right-author">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Abstract for {{ cited.cited_pub.author.first.last_name }}
+						 <!-- Then, if there are 2 authors, cite both -->
+						 {% if cited.cited_pub.author.all.count == 2 %}
+						 	and {{ cited.cited_pub.author.last.last_name }}
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						 {% elif cited.cited_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %}
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }}):
+					</p>
+					<div id="abstract{{ cited.id }}" class="bottom-right-abstract">
+						{{ cited.cited_pub.abstract }}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</article>
+{% endfor %} 
+{% endblock content  %}

@@ -1,0 +1,18 @@
+To run the server:
+	1. Go in the directory where my virtual environment is (VirEnv)
+	2. pipenv shell (activates the virtual environment)
+	3. Go in the directory where manage.py is ()
+	3. python manage.py runserver (runs server)
+
+To end server and virtual environment:
+	1. Ctr+c (closes server)
+	2. exit (deactivates virtual environment)
+
+To "lock" the virtual environment before deployment
+	1. ...
+
+To create an app inside the project/website (when inside the virtual environment)
+	1. python manage.py startapp mainapp (<app name>)
+
+
+

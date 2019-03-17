@@ -1,0 +1,24 @@
+{% extends "mainapp/base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="content-section">
+		<!--Within our form, we need to add a "CSRF token" (Cross-Site Request Forgery". This is a hidden tage, and it is something that you need to protect your forms. -->
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Log In</legend>
+				<!--Below is where we use the built-in forms from Django, but it does not include a Submit button -->
+				{{ form|crispy }} <!--Adding this crispy bit nicely formats everything for us-->
+			</fieldset>
+			<div class="form-group">
+				<button class="btn btn-outline-info" type="submit">Login</button>
+			</div>	
+		</form>
+		<div class="border-top pt-3">
+			<small class="text-muted">
+				Need an account? <a class="ml-2" href="{% url 'register' %}">Sign Up</a>
+			</small>
+		</div>
+	</div>
+{% endblock content  %}

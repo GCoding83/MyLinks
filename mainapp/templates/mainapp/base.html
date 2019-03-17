@@ -1,0 +1,94 @@
+<!--You need to add this code for it to read your "static" (i.e. CSS and JS) files inside your static folder -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- Required meta tags for Bootstrap -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Customized CSS from Corey Schafer -->
+    <link rel="stylesheet" type="text/css" href="{% static 'mainapp/main.css' %}">
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.3.1.js"></script>
+
+    <script type="text/javascript" src="{% static 'mainapp/jquery.js' %}"></script>
+
+	{% if title %}
+		<title>CitationMaps - {{ title }}</title>
+
+	{% else %}
+		<title>CitationMaps</title>
+	{% endif %}
+</head>
+<body>
+	<!--Nav bar snippets-->
+	<header class="site-header">
+	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	    <div class="container">
+	      <a class="navbar-brand mr-4" href="/">CitationMaps</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	      </button>
+	      <div class="collapse navbar-collapse" id="navbarToggle">
+	        <div class="navbar-nav mr-auto">
+	          <a class="nav-item nav-link" href="{%  url 'mainapp-home' %}">Home</abelow>
+	          <a class="nav-item nav-link" href="{%  url 'about-page' %}">About</a>
+	        </div>
+
+	        <!-- Navbar Right Side -->
+	        <div class="navbar-nav">
+	        	<!--Display Login and Register if user isn't already logged in. If they are logged in, then show log out page.-->
+	        	{% if user.is_authenticated %}
+	        		<a class="nav-item nav-link" href="{% url 'my_projects' %}">MyProjects</a>
+	        		<a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+	        		<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+
+	        	{% else %}
+		        	<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+		        	<a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+		        {% endif %} 
+	        </div>
+	      </div>
+	    </div>
+	  </nav>
+	</header>
+	
+	<!-- Main part snippets -->
+	<main role="main" class="container-fluid">
+	  <div class="row">
+	    <div class="col-md-8">
+	    <!--Just above our main content block, we create a space to show flash (alert) messages whenever needed. We could have placed this anywhere, but it's a nice position just above the main content-->
+	    {% if messages %} <!--"messages" comes from django.contrib. We use it, among other places, in our register.html template -->
+	    	{% for message in messages %}
+	    		<div class="alert alert-{{ message.tags }}">
+	    			{{ message }}
+	    		</div>
+	    	{% endfor %}
+
+	    {% endif %}
+
+	    {% block content %}{% endblock %}
+	    </div>
+	   <!--  <div class="col-md-4">
+	      <div class="content-section">
+	        <h3>Our Sidebar</h3>
+	        <p class='text-muted'>You can put any information here you'd like.
+	          <ul class="list-group">
+	            <li class="list-group-item list-group-item-light">Latest Posts</li>
+	            <li class="list-group-item list-group-item-light">Announcements</li>
+	            <li class="list-group-item list-group-item-light">Calendars</li>
+	            <li class="list-group-item list-group-item-light">etc</li>
+	          </ul>
+	        </p>
+	      </div>
+	    </div> -->
+	  </div>
+	</main>
+</script>
+</body>
+</html>
