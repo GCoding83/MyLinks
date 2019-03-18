@@ -36,54 +36,69 @@ $(function(){
 });
 
 
-/*When user clicks on the citation, open the citation descriotion.*/
+/*When user clicks on the citation in the bottom box, open the citation description.*/
 $(function(){
 	$('.nested-citations').on('click', function(){	
-		$(this).next().toggle(100);
-		/*Ensure that the bottom-right box (the one with the citation abstracts) gets closed if the citation description is closed*/
+		/*Declare this citation's abstract and author id's*/
+		var thisAbstractId = "abstract" + $(this).next().attr('id');
+		var thisAuthorId = "auhtor" + $(this).next().attr('id');		
+		/*Declare ANY citation abstracts and authors in this box*/
+		var anyBoxAuthor = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-author');
+		var anyBoxAbstract = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-abstract');
+		/*Declare the box-bottom-right-open*/
 		var box = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open');
-		if ($(box).is(':visible')){
+		
+		/*if clicked citation abstract is already showing*/
+		if ($("#"+thisAbstractId).is(':visible')) {	
+			/*close everything, including this citation's description*/			
+			$(anyBoxAbstract).hide();
+			$(anyBoxAuthor).hide();
 			$(box).hide();
+			$(this).next().hide(100);
+
+/*		else if clicked citation abstract is not showing, just toggle the citation description
+*/		} else {
+			$(this).next().toggle(100);
 		}
 	});	
 });
 
 
 
-/*The jQuery for opening the citation abstracts in the bottom-right and top-right boxes*/
+/*When user clicks on the citation abstracts in the bottom box, open the bottom right box.*/
 $(function(){
 	/*When user clicks on a citation-description of a publication*/
 	$('body').on('click', '.citation-description', function(){
 		/*Declare the variables that store the unique id'd of each author and abstract of the clicked description */
-		var authorid = "author" + $(this).attr('id');
-		var abstractid = "abstract" + $(this).attr('id');
+		var thisAuthorId = "author" + $(this).attr('id');
+		var thisAbstractId = "abstract" + $(this).attr('id');
 		var box = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open');
-		/*Declare nearest other citation abstracts and authors*/
-		var otherauthor = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-author');
-		var otherabstract = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-abstract');
+		/*Declare ANY citation abstracts and authors in this box*/
+		var anyBoxAuthor = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-author');
+		var anyBoxAbstract = $(this).closest('.box-bottom-open').siblings('.box-bottom-right-open').find('.bottom-right-abstract');
 
 		/*if clicked citation abstract is not showing*/
-		if ($("#"+abstractid).is(':hidden')) {	
+		if ($("#"+thisAbstractId).is(':hidden')) {	
 /*			if there already is another citation abstract showing (meaning the box is open)		
-*/			if (otherabstract.is(':visible')) {
+*/			if (anyBoxAbstract.is(':visible')) {
 				/*Hide the currently showing abstract (and related author)*/
-				$(otherabstract).hide();
-				$(otherauthor).hide();
+				$(anyBoxAbstract).hide();
+				$(anyBoxAuthor).hide();
 				/*Show the clicked abstract and author*/
-				$("#"+authorid).show();
-				$("#"+abstractid).show();
+				$("#"+thisAuthorId).show();
+				$("#"+thisAbstractId).show();
 /*			else if no other citation abstract is showing (meaning the box is closed)
 */			} else {
 				/*Show the clicked citation abstract (and author) and open the box*/
-				$("#"+authorid).show();
-				$("#"+abstractid).show();
+				$("#"+thisAuthorId).show();
+				$("#"+thisAbstractId).show();
 				$(box).show();
 			}
 /*		else if clicked citation abstract is already showing (meaning you want to close the box)
 */		} else {
 /*			close everything
-*/			$("#"+authorid).hide();
-			$("#"+abstractid).hide();
+*/			$("#"+thisAuthorId).hide();
+			$("#"+thisAbstractId).hide();
 			$(box).hide();
 		}
 	});
