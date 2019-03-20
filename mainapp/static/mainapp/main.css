@@ -3,7 +3,6 @@ body {
   font-size: calc([minimum size] + ([maximum size] - [minimum size]) * ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
   line-height: ibid;
 }
-
 EXAMPLE:
 body {
   font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
@@ -131,10 +130,6 @@ body {
 }
 
 
-.inverted {
-  filter: invert(100%);
-}
-
 /*.box-right {
   grid-area: right;
   background-color: #e6f2ff;
@@ -189,6 +184,15 @@ a {
   padding: 5px;
 }
 
+.nested-citations:hover {
+  font-size: 0.8em;
+  flex: 1;
+  padding: 5px;
+  cursor: pointer;
+}
+
+
+
 
 .xbox-right {
   grid-area: right;
@@ -231,7 +235,8 @@ a {
 
 .citation-description {
   font-size: 0.7em;
-  padding-left: 1.3em;
+  padding-left: 7px;
+  padding-right: 5px;
   display: none;
 }
 
@@ -242,11 +247,31 @@ a {
   display: none;
 }
 
+.info-image{
+  filter: invert(100%);
+}
 
+.bottom-info-image{
+  float: left;
+  padding-right: 3px;
+  filter: invert(100%);
+}
 
+.bottom-abstract-image{
+  float: right;
+  padding-left: 1px;
+}
 
+.bottom-info-image:hover, .bottom-abstract-image:hover{
+  cursor: pointer;
+}
 
-
+.image-active{
+  height: 20px;
+  width: 20px;
+  -webkit-filter: contrast(75%); /* Safari 6.0 - 9.0 */
+  filter: contrast(75%);
+}
 
 
 

@@ -25,20 +25,16 @@ kant = publications.first()
 		EXPL: "citations" gives you the authors that cite Kant
 		
 		VS
-
 ***kant.citation.all()
 		>>><QuerySet [<Publication: An Enquiry Concerning Human Understanding - B>, <Publication: Discours de la Methode - B>]>
 		PERSO: Hume, Descartes
 		EXPL: "citation" gives you Kant's own citations
 		
 		VS
-
 ***kant.cited_pubs.all()
 		>>><QuerySet [<CitationMetadata: Citer: Impossible Modern Book; Cited: Critique of Pure Reason>]>
 		EXPL: "cited_pubs" gives you the sets in which Kant is the CITED
-
 		VS
-
 ***kant.citer_pubs.all()
 		>>><QuerySet [<CitationMetadata: Citer: Critique of Pure Reason; Cited: An Enquiry Concerning Human Understanding>, <CitationMetadata: Citer: Critique of Pure Reason; Cited: Discours de la Methode>]>
 		EXPL: "citer_pubs" gives you the sets in which Kant is the CITER
@@ -78,7 +74,6 @@ kant = publications.first()
 			<br>
 		</div>
 	{% endfor %}
-
 	<div id="i">
 		<div class="hideorshow">
 		Yo
@@ -98,7 +93,6 @@ kant = publications.first()
 			<br>
 		</div>
 	{% endfor %}
-
 	{% for publication in publications %}
 		{% for citer in publication.cited_pubs.all %}
 			<div id='info{{ citer.id }}' class="myabstract">Abstract: {{ citer.cited_pub.abstract }}</div><br>
@@ -255,7 +249,7 @@ kant = publications.first()
 			<!-- The left part where the user clicks to get all the publication details -->
 			<div class="box-left">
 				{% load static %}
-				<img class="inverted" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
+				<img class="info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
 			</div>
 
 			<!-- The right part where the user clicks to get the Abstract -->
@@ -315,7 +309,13 @@ kant = publications.first()
 						 ({{ cited.cited_pub.year }}); 
 						</div>
 						<div id="{{ cited.id }}" class="citation-description">
-						{{ cited.description }}
+							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
+
+							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
+							<p>
+							{{ cited.description }}
+						</p>
+
 						</div>
 
 					<!-- This is the hidden box that will show the Abstract of the citation if the user wants to see it -->
@@ -356,10 +356,6 @@ kant = publications.first()
 						box-bottom-right-open CLOSES
 						box-bottom-right-open has the abstract of the new cited pub
 						box-bottom-right-open BECOMES VISIBLE
-
-
-
-
 				
 			-->
 			<div class="box-bottom-right-open">
@@ -386,4 +382,4 @@ kant = publications.first()
 	</div>
 </article>
 {% endfor %} 
-{% endblock content  %}
+{% endblock content %}
