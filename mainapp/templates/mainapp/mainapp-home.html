@@ -217,7 +217,7 @@ kant = publications.first()
 						and {{ publication.author.last.last_name }}
 					{% elif publication.author.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }})</header>
+						({{ publication.year }})</header><br>
 					<div>
 						Title: {{ publication.title }}
 						<br>Authors: 
@@ -266,7 +266,7 @@ kant = publications.first()
 						and {{ publication.author.last.last_name }}
 					{% elif publication.author.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }})</header>
+						({{ publication.year }})</header><br>
 				<div>
 					{{ publication.abstract }}
 				</div>
@@ -308,11 +308,11 @@ kant = publications.first()
 						 <!-- Year of publication -->
 						 ({{ cited.cited_pub.year }}); 
 						</div>
-						<div id="{{ cited.id }}" class="citation-description">
+						<div id="{{ cited.id }}" class="citation-description"><br>
 							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
 
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
-							<p>
+						<p>
 							{{ cited.description }}
 						</p>
 
@@ -341,26 +341,63 @@ kant = publications.first()
 					{% endfor %}
 				</p>
 			</div>
-			<!-- This is the hidden box that will show the Abstract of the citation if the user wants to see it 
-			
-			(for publication in publications)
-				div class: box-bottom-right-open IS ORIGINALLY HIDDEN
-				if box-bottom-right-open is HIDDEN
-					if you click on the description of one of publication's cited pubs
-						box-bottom-right-open has the abstract of this cited pub
-						box-bottom-right-open BECOMES VISIBLE
-				else (i.e. if box-bottom-right-open is VISIBLE)
-					if you click on the description that is CURRENTLY SHOWING in box-bottom-right-open
-						box-bottom-right-open CLOSES
-					elif you click on the description of ANOTHER ONE of publication's cited pubs
-						box-bottom-right-open CLOSES
-						box-bottom-right-open has the abstract of the new cited pub
-						box-bottom-right-open BECOMES VISIBLE
 				
-			-->
+
+			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
+			<div class="box-bottom-left-open">
+				{% for cited in publication.citer_pubs.all %}
+					<p id="bottomLeftAuthor{{ cited.id }}" class="bottom-left-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Details for {{ cited.cited_pub.author.first.last_name }}
+						 <!-- Then, if there are 2 authors, cite both -->
+						 {% if cited.cited_pub.author.all.count == 2 %}
+						 	and {{ cited.cited_pub.author.last.last_name }}
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						 {% elif cited.cited_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %}
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }})
+					</p>
+					<div id="bottomLeftInfo{{ cited.id }}" class="bottom-left-info">
+						<div>
+						Title: {{ cited.cited_pub.title }}
+						<br>Authors: 
+						{% for author in cited.cited_pub.author.all %}
+							{% if author.first_name and author.middle_name %}
+								{{ author.first_name }} {{ author.middle_name }} {{ author.last_name }},
+							{% elif author.first_name %}
+								{{ author.first_name }} {{ author.last_name }}, 
+							{% elif author.middle_name %}
+								{{ author.middle_name }} {{ author.last_name }}, 
+							{% else %}
+								{{ author.last_name }}, 
+							{% endif %}
+						{% endfor %}
+						<br>
+						Year: {{ cited.cited_pub.year }}
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						Type: {{ cited.cited_pub.get_pub_type_display }}
+						{% if publication.pub_type == 'A'%}
+							<br>Journal: {{ cited.cited_pub.journal.journal_name }}
+							<br>Volume: {{ cited.cited_pub.journal.volume }}
+							<br>Issue: {{ cited.cited_pub.journal.issue }}
+							<br><small>More</small>
+						{% endif %}
+					</div>
+					</div>
+				{% endfor %}
+			</div>
+
+
+		
+
+
+			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
 			<div class="box-bottom-right-open">
 				{% for cited in publication.citer_pubs.all %}
-					<p id="author{{ cited.id }}" class="bottom-right-author">
+					<p id="bottomRightAuthor{{ cited.id }}" class="bottom-right-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
 						Abstract for {{ cited.cited_pub.author.first.last_name }}
 						 <!-- Then, if there are 2 authors, cite both -->
@@ -371,9 +408,9 @@ kant = publications.first()
 						 	et al.
 						 {% endif %}
 						 <!-- Year of publication -->
-						 ({{ cited.cited_pub.year }}):
+						 ({{ cited.cited_pub.year }})
 					</p>
-					<div id="abstract{{ cited.id }}" class="bottom-right-abstract">
+					<div id="bottomRightAbstract{{ cited.id }}" class="bottom-right-abstract">
 						{{ cited.cited_pub.abstract }}
 					</div>
 				{% endfor %}
