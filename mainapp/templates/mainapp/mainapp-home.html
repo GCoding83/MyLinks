@@ -137,6 +137,15 @@ kant = publications.first()
 		<!-- The main grid container starts here -->
 		<div class="grid-container">
 
+			<!-- The top part where the user clicks to get all the citations -->
+			<div class="box-top"> 
+				<div class="logo-top-bottom">{% load static %}
+					<!-- Add media like this:  -->
+					{% load static %}
+					<img src="{% static "../media/site_pics/logos/open-quotes logo.png" %}" alt="Logo" height='20' width='20'>
+				</div>
+			</div>
+
 			<!-- Box top when open -->
 			<div class="box-top-open">
 				<p class="open-header">
@@ -152,7 +161,7 @@ kant = publications.first()
 				<p class='flex-container'>
 					<!-- For each citer_pub that cites the cited_pub (i.e. our publication) -->
 		 			{% for citer in publication.cited_pubs.all %}		
-						<div class="nested-citations">
+						<div class="top-nested-citations">
 							<!-- Cite first author's last name -->
 							 {{ citer.citer_pub.author.first.last_name }}
 							 <!-- Then, if there are 2 authors, cite both -->
@@ -165,21 +174,89 @@ kant = publications.first()
 							 <!-- Year of publication -->
 							 ({{ citer.citer_pub.year }}); 
 						</div>
-						<div class="citation-description">
+						<div id="{{ citer.id }}" class="citation-description"><br>
+							<img class="top-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
+
+							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="top-abstract-image">	
+
+							<p>
 							{{ citer.description }}
-						</div>	
+							</p>
+						</div>
 					{% endfor %}
 				</p>	
 			</div>
+				
 
-			<!-- The top part where the user clicks to get all the citations -->
-			<div class="box-top"> 
-				<div class="logo-top-bottom">{% load static %}
-					<!-- Add media like this:  -->
-					{% load static %}
-					<img src="{% static "../media/site_pics/logos/open-quotes logo.png" %}" alt="Logo" height='20' width='20'>
-				</div>
+			<!-- This is the box that opens on the top left to display the citation info when user clicks on image -->
+			<div class="box-top-left-open">
+				{% for citer in publication.cited_pubs.all %}
+					<p id="topLeftAuthor{{ citer.id }}" class="top-left-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Details for {{ citer.citer_pub.author.first.last_name }}
+						 <!-- Then, if there are 2 authors, cite both -->
+						 {% if citer.citer_pub.author.all.count == 2 %}
+						 	and {{ citer.citer_pub.author.last.last_name }}
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						 {% elif citer.citer_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %}
+						 <!-- Year of publication -->
+						 ({{ citer.citer_pub.year }})
+					</p>
+					<div id="topLeftInfo{{ citer.id }}" class="top-left-info">
+						<div>
+						Title: {{ citer.citer_pub.title }}
+						<br>Authors: 
+						{% for author in citer.citer_pub.author.all %}
+							{% if author.first_name and author.middle_name %}
+								{{ author.first_name }} {{ author.middle_name }} {{ author.last_name }},
+							{% elif author.first_name %}
+								{{ author.first_name }} {{ author.last_name }}, 
+							{% elif author.middle_name %}
+								{{ author.middle_name }} {{ author.last_name }}, 
+							{% else %}
+								{{ author.last_name }}, 
+							{% endif %}
+						{% endfor %}
+						<br>
+						Year: {{ citer.citer_pub.year }}
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						Type: {{ citer.citer_pub.get_pub_type_display }}
+						{% if publication.pub_type == 'A'%}
+							<br>Journal: {{ citer.citer_pub.journal.journal_name }}
+							<br>Volume: {{ citer.citer_pub.journal.volume }}
+							<br>Issue: {{ citer.citer_pub.journal.issue }}
+							<br><small>More</small>
+						{% endif %}
+					</div>
+					</div>
+				{% endfor %}
 			</div>
+
+			<!-- This is the box that opens on the top right to display the citation abstract when user clicks on image -->
+			<div class="box-top-right-open">
+				{% for citer in publication.cited_pubs.all %}
+					<p id="topRightAuthor{{ citer.id }}" class="top-right-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Abstract for {{ citer.citer_pub.author.first.last_name }}
+						 <!-- Then, if there are 2 authors, cite both -->
+						 {% if citer.citer_pub.author.all.count == 2 %}
+						 	and {{ citer.citer_pub.author.last.last_name }}
+						 <!-- Or, if there are more than two authors, add "et al." -->
+						 {% elif citer.citer_pub.author.all.count > 2 %}
+						 	et al.
+						 {% endif %}
+						 <!-- Year of publication -->
+						 ({{ citer.citer_pub.year }})
+					</p>
+					<div id="topRightAbstract{{ citer.id }}" class="top-right-abstract">
+						{{ citer.citer_pub.abstract }}
+					</div>
+				{% endfor %}
+			</div>
+
 
 
 			<!-- The cnter box, where the main info of the citation appears -->	
@@ -249,7 +326,7 @@ kant = publications.first()
 			<!-- The left part where the user clicks to get all the publication details -->
 			<div class="box-left">
 				{% load static %}
-				<img class="info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
+				<img class="center-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
 			</div>
 
 			<!-- The right part where the user clicks to get the Abstract -->
@@ -257,7 +334,7 @@ kant = publications.first()
 				<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height=20 width='20'>
 			</div>
 
-			<!-- The rigt box when open, where the Abstract appears -->
+			<!-- The right box when open, where the Abstract appears -->
 			<article class="box-right-open">
 				<!-- Creating a flexbox container, which will display all the citations from this publication -->
 				<header class="open-header">Abstract for
@@ -295,7 +372,7 @@ kant = publications.first()
 				<p class='flex-container'>
 					<!-- For each cited_pub cited by the citer_pub (i.e. our publication) -->
 		 			{% for cited in publication.citer_pubs.all %}		
-						<div class="nested-citations">
+						<div class="bottom-nested-citations">
 						<!-- Cite first author's last name -->
 						 {{ cited.cited_pub.author.first.last_name }}
 						 <!-- Then, if there are 2 authors, cite both -->
@@ -312,38 +389,16 @@ kant = publications.first()
 							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
 
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
-						<p>
-							{{ cited.description }}
-						</p>
-
+							<p>
+								{{ cited.description }}
+							</p>
 						</div>
-
-					<!-- This is the hidden box that will show the Abstract of the citation if the user wants to see it -->
-					<!-- <div class="box-bottom-right-open">
-						<div class="open-header"> -->
-						<!-- Cite first author's last name -->
-						<!--  Abstract for {{ cited.cited_pub.author.first.last_name }} -->
-						 <!-- Then, if there are 2 authors, cite both -->
-					<!-- 	 {% if cited.cited_pub.author.all.count == 2 %}
-						 	and {{ cited.cited_pub.author.last.last_name }} -->
-						 <!-- Or, if there are more than two authors, add "et al." -->
-						<!--  {% elif cited.cited_pub.author.all.count > 2 %}
-						 	et al.
-						 {% endif %} -->
-						 <!-- Year of publication -->
-<!-- 						 ({{ cited.cited_pub.year }})
- -->						
-						<!-- The abstract -->
-					<!-- 	 <div>
-							{{ cited.cited_pub.abstract }}
-						</div>
-					</div> -->
 					{% endfor %}
 				</p>
 			</div>
 				
 
-			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
+			<!-- This is the box that opens on the bottom left to display the citation info when user clicks on image -->
 			<div class="box-bottom-left-open">
 				{% for cited in publication.citer_pubs.all %}
 					<p id="bottomLeftAuthor{{ cited.id }}" class="bottom-left-author open-header">
@@ -389,9 +444,6 @@ kant = publications.first()
 					</div>
 				{% endfor %}
 			</div>
-
-
-		
 
 
 			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
