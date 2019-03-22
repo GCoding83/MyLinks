@@ -14,58 +14,58 @@ body {
 /*Practice flex and grid*/
 /*Practice grid*/
 /* Main box */
-.box-center {
+.center-box {
   grid-area: newcenter;
   padding: 0.5em;
 }
 
-.box-top {
+.top-box {
   grid-area: newtop;
   background-color: #ffe6e6;
   border: 2px solid black;
 }
 
-.box-top-open {
+.top-box-open {
   grid-area: newtopopen;
   background-color: #ffcccc;
   border: 2px solid black;
   display: none;
 }
 
-.box-top-right-open{
+.top-right-box-open{
   grid-area: newtoprightopen;
   background-color: #ffb3b3;
   border: 2px solid black;
   display: none;  
 }
 
-.box-top-left-open{
+.top-left-box-open{
   grid-area: newtopleftopen;
   background-color: #ffb3b3;
   border: 2px solid black;
   display: none;  
 }
-.box-bottom {
+.bottom-box {
   grid-area: newbottom;
   background-color: #ffe6e6;
   border: 2px solid black;
 }
 
-.box-bottom-open {
+.bottom-box-open {
   grid-area: newbottomopen;
   background-color: #ffcccc;
   border: 2px solid black;
   display: none;
 }
 
-.box-bottom-right-open{
+.bottom-right-box-open{
   grid-area: newbottomrightopen;
   background-color: #ffb3b3;
   border: 2px solid black;
   display: none;  
 }
 
-.box-left {
+.left-box {
   grid-area: newleft;
   background-color: #e6f2ff;
   padding-right: 1.2em; 
@@ -73,7 +73,7 @@ body {
   border: 2px solid black;
 }
 
-.box-bottom-left-open{
+.bottom-left-box-open{
   grid-area: newbottomleftopen;
   background-color: #ffb3b3;
   border: 2px solid black;
@@ -81,20 +81,20 @@ body {
 
 }
 
-.box-left-open {
+.left-box-open {
   grid-area: newleftopen;
   background-color: #cce5ff;
   border: 2px solid black;
   display: none;
 }
 
-.box-right {
+.right-box {
   grid-area: newright;
   background-color: #e6f2ff;
   border: 2px solid black;
 }
 
-.box-right-open {
+.right-box-open {
   grid-area: newrightopen;
   background-color: #cce5ff;
   border: 2px solid black;
