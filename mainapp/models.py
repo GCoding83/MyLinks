@@ -49,13 +49,18 @@ class Author(models.Model):
 			return str(self.middle_name) + ' ' + str(self.last_name)
 		return str(self.first_name) + ' ' + str(self.middle_name) + ' ' + str(self.last_name)
 
-
 #Intermediary table 
 class PublicationAuthor(models.Model):
 	author = models.ForeignKey('Author', related_name='publication_authors', on_delete=models.CASCADE)
 	publication = models.ForeignKey('Publication', related_name='publication_authors', on_delete=models.CASCADE)
 	author_rank = models.IntegerField(default=None)
 
+	class Meta:
+		ordering = ('publication', 'author_rank')
+		unique_together = ('author', 'publication', 'author_rank')
+
+	def __str__(self):
+		return str(self.author) + ' in ' + str(self.publication.title)
 
 class PublicationAuthorInline(admin.TabularInline):
 	model = PublicationAuthor

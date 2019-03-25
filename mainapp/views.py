@@ -215,6 +215,7 @@ def home(request):
           'citations': CitationMetadata.objects.all(),
           'othertypes': OtherPublicationType.objects.all(),
         'presentations': Presentation.objects.all(),
+        'publicationauthors': PublicationAuthor.objects.all(),
          'studentworks': StudentWork.objects.all(),
              'webpubs': WebPublication.objects.all()
 	} 

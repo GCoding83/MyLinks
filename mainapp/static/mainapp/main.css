@@ -50,7 +50,6 @@ body {
   background-color: #ffe6e6;
   border: 2px solid black;
 }
-
 .bottom-box-open {
   grid-area: newbottomopen;
   background-color: #ffcccc;
@@ -116,40 +115,6 @@ body {
 
 
 
-.myabstract{
-  display: none;
-}
-
-
-
-.test-flex-main-container{
-  display: flex;
-  flex-flow: row wrap;
-  background-color: red;
-}
-
-.test-flex-inner-container{
-  background-color: blue;
-  flex:1;
-
-}
-
-.test-flex-item{
-  background-color: green;
-}
-
-.test-info-class{
-  display: none;
-}
-
-
-
-
-
-
-
-
-
 /* Open details element. */
 details[open] {
   background-color: #ffcccc;
@@ -160,18 +125,28 @@ a {
   color: black;
 }
 
+.journalname a, .author a{
+  color: #333333;
+}
+
+
 .publication-title {
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin-left: 5px;
+  color: #00001a;
+
+
 }
 
 .journalname, .author{
-  font-size: 0.8em;
   padding-left: 3em;
+  font-style: italic;
+  color: #333333;
+
 }
 
 .year {
-  font-size: 0.8em;  
+  font-style: italic;
 }
 
 .flex-container { 
@@ -191,8 +166,6 @@ a {
   padding: 5px;
   cursor: pointer;
 }
-
-
 
 
 .flex-container-right { 
@@ -217,10 +190,11 @@ a {
 
 
 .open-header {
-  font-size: 0.9em;
   padding: 0.3em;
   border-top: 2px solid black;
   border-bottom: 2px dotted grey;
+  color: #00001a;
+
 }
 
 
@@ -236,6 +210,10 @@ a {
 
 .bottom-right-author, .bottom-right-abstract, .bottom-left-author, .bottom-left-info, .top-right-author, .top-right-abstract, .top-left-author, .top-left-info{
   display: none;
+}
+
+.center-left-info, .bottom-left-info, .top-left-info, .center-right-abstract, .bottom-right-abstract, .top-right-abstract{
+  margin: 0.5em;
 }
 
 
@@ -270,7 +248,31 @@ a {
   filter: invert(100%);
 }
 
+.center-left-info .left-categories, .center-right-abstract .abstract-category{
+  color: white;
+  background-color: #3396ff;
+  font-family: 'Courier New, monospace';
+  font-size: 0.7em;
+  padding: 0.1em;
+  border: 1px solid #00001a;
+  margin: 5px 2px 5px 0;
+}
 
+.top-left-info .left-categories, .bottom-left-info .left-categories, .top-right-abstract .abstract-category, .bottom-right-abstract .abstract-category{
+  color: white;
+  background-color: #ff3333;
+  font-family: 'Courier New, monospace';
+  font-size: 0.7em;
+  padding: 0.1em;
+  border: 1px solid #00001a;
+  margin: 5px 2px 5px 0;
+}
+
+.left-entries, .abstract-entry{
+  font-size: 0.9em;
+  color: #333333;
+  font-style: italic;
+}
 
 
 
