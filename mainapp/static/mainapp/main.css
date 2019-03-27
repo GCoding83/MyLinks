@@ -12,7 +12,20 @@ body {
 
 
 /*Practice flex and grid*/
-/*Practice grid*/
+.flexcontainer {
+  display: flex;
+  flex-flow: row wrap;
+  background-color: yellow;
+}
+
+.flexitem {
+  flex: 1;
+  background-color: red;
+}
+
+
+
+
 /* Main box */
 .center-box {
   grid-area: newcenter;
@@ -27,21 +40,21 @@ body {
 
 .top-box-open {
   grid-area: newtopopen;
-  background-color: #ffcccc;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;
 }
 
 .top-right-box-open{
   grid-area: newtoprightopen;
-  background-color: #ffb3b3;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;  
 }
 
 .top-left-box-open{
   grid-area: newtopleftopen;
-  background-color: #ffb3b3;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;  
 }
@@ -52,14 +65,14 @@ body {
 }
 .bottom-box-open {
   grid-area: newbottomopen;
-  background-color: #ffcccc;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;
 }
 
 .bottom-right-box-open{
   grid-area: newbottomrightopen;
-  background-color: #ffb3b3;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;  
 }
@@ -74,7 +87,7 @@ body {
 
 .bottom-left-box-open{
   grid-area: newbottomleftopen;
-  background-color: #ffb3b3;
+  background-color: #ffe6e6;
   border: 2px solid black;
   display: none;  
 
@@ -82,7 +95,7 @@ body {
 
 .left-box-open {
   grid-area: newleftopen;
-  background-color: #cce5ff;
+  background-color: #e6f2ff;
   border: 2px solid black;
   display: none;
 }
@@ -95,7 +108,7 @@ body {
 
 .right-box-open {
   grid-area: newrightopen;
-  background-color: #cce5ff;
+  background-color: #e6f2ff;
   border: 2px solid black;
   display: none;
 }
@@ -156,14 +169,20 @@ a {
 
 .bottom-nested-citations, .top-nested-citations {
   font-size: 0.8em;
-  flex: 1;
-  padding: 5px;
+  padding: 5px 5px;
+  width: 50%;
+
 }
 
-.bottom-nested-citations:hover, .top-nested-citations:hover {
-  font-size: 0.8em;
-  flex: 1;
-  padding: 5px;
+.citation-active{
+  font-style: 1.2em;
+  padding: 5px 5px;
+  width: 50%;
+  font-weight: 500;
+  color: #1a0d00;
+}
+
+.bottom-nested-citations:hover, .top-nested-citations:hover, .citation-active {
   cursor: pointer;
 }
 
@@ -192,19 +211,27 @@ a {
 .open-header {
   padding: 0.3em;
   border-top: 2px solid black;
-  border-bottom: 2px dotted grey;
+  border-bottom: 2px solid grey;
   color: #00001a;
-
 }
+
+.open-header.top-left-author, .open-header.bottom-left-author, .open-header.top-right-author, .open-header.bottom-right-author, .open-header.top-center-author, .open-header.bottom-center-author{
+    background-color: #ffb3b3;
+}
+
+.open-header.center-left-author, .open-header.center-right-author{
+  background-color: #b3d7ff;
+}
+
 
 
 .citation-description {
-  font-size: 0.7em;
-  padding-left: 7px;
-  padding-right: 5px;
+  font-size: 0.9em;
+  padding: 0px 7px 20px 7px;
   display: none;
+  font-style: italic;
+  color: #1a0d00;
 }
-
 
 
 
@@ -219,13 +246,13 @@ a {
 
 .bottom-info-image, .top-info-image{
   float: left;
-  padding-right: 3px;
+  margin-right: 10px;
   filter: invert(100%);
 }
 
 .bottom-abstract-image, .top-abstract-image{
   float: right;
-  padding-left: 1px;
+  margin-left: 10px;
 }
 
 .bottom-info-image:hover, .bottom-abstract-image:hover, .top-info-image:hover, .top-abstract-image:hover{
@@ -249,8 +276,8 @@ a {
 }
 
 .center-left-info .left-categories, .center-right-abstract .abstract-category{
-  color: white;
-  background-color: #3396ff;
+  color: black;
+  background-color: #b3d7ff;
   font-family: 'Courier New, monospace';
   font-size: 0.7em;
   padding: 0.1em;
@@ -259,8 +286,8 @@ a {
 }
 
 .top-left-info .left-categories, .bottom-left-info .left-categories, .top-right-abstract .abstract-category, .bottom-right-abstract .abstract-category{
-  color: white;
-  background-color: #ff3333;
+  color: black;
+  background-color: #ffb3b3;
   font-family: 'Courier New, monospace';
   font-size: 0.7em;
   padding: 0.1em;

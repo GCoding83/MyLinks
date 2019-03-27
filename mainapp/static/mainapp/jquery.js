@@ -73,7 +73,7 @@ $(function(){
 
 
 /*2.*/
-/*When user clicks on the citation in the top/bottom box, open the citation description.*/
+/*When user clicks on the citation in the top/bottom box, open the citation description and make the text bold and bigger.*/
 $(function(){
 	$('.top-nested-citations, .bottom-nested-citations').on('click', function(){	
 		
@@ -115,7 +115,7 @@ $(function(){
 			/*if clicked citation info is also showing (in the LEFT box)*/
 			/*i.e. if BOTH left and right are showing*/
 			if ($("#"+thisLeftInfoId).is(':visible')) {	
-				/*close everything, both left and right, and make sure images are small*/			
+				/*close everything, both left and right, and make sure images are small and fonts are small*/			
 				$(anyRightAbstract).hide();
 				$(anyRightAuthor).hide();
 				$(rightBox).hide();
@@ -124,6 +124,7 @@ $(function(){
 				$(anyLeftAuthor).hide();
 				$(leftBox).hide();
 				$(thisInfoImage).removeClass('image-active');
+				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
 				$(this).next().hide(100);
 			/*if clicked citation abstract alone is showing (in the RIGHT box*/
 			} else {
@@ -132,6 +133,7 @@ $(function(){
 				$(anyRightAuthor).hide();
 				$(rightBox).hide();
 				$(thisAbstractImage).removeClass('image-active');
+				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
 				$(this).next().hide(100);
 			}
 		/*else if only the clicked citation info is showing (in the LEFT box)*/
@@ -140,12 +142,18 @@ $(function(){
 			$(anyLeftInfo).hide();
 			$(anyLeftAuthor).hide();
 			$(leftBox).hide();
-			$(thisInfoImage).removeClass('image-active');
+			$(thisInfoImage).removeClass('image-active').addClass(vertical+'-nested-citations');
+			$(this).removeClass('citation-active');
 			$(this).next().hide(100);
 		
 		/*else if neither is visible, on the left or right, then simply toggle the citation description */
 		} else {
 			$(this).next().toggle(100);
+			if ($(this).hasClass('citation-active')){
+				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
+			}else{
+				$(this).removeClass(vertical+'-nested-citations').addClass('citation-active');
+			}
 		}
 	});	
 });
