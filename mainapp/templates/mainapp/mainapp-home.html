@@ -465,7 +465,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 				<div class="logo-top-bottom">{% load static %}
 					<!-- Add media like this:  -->
 					{% load static %}
-					<img src="{% static "../media/site_pics/logos/open-quotes logo.png" %}" alt="Logo" height='20' width='20'>
+					<img src="{% static "../media/site_pics/logos/New-Quotes-Logo-1.png" %}" alt="Logo" height='25' width='50' class="quotes-image">
 				</div>
 			</div>
 
@@ -499,18 +499,21 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 							 <!-- Year of publication -->
 							 ({{ citer.citer_pub.year }});
 						</span>
-						<span id="{{ citer.id }}" class="citation-description"><br>
+						<span id="{{ citer.id }}" class="citation-description">
+							<button class="citation-box">CITATION</button>
+							<button class="context-box">CONTEXT</button><br><br>
 							<img class="top-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
-
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="top-abstract-image">	
-
-							<span>
-							{{ citer.description }}
+							<span class="big-text-box">
+								<span class="actual-citation">
+									{{ citer.description }}
+								</span>
 							</span>
 						</span><br>
 					{% endfor %}
 				</p>	
 			</div>
+
 				
 
 			<!-- This is the box that opens on the top left to display the citation info when user clicks on image -->
@@ -675,29 +678,32 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 			<!-- The cnter box, where the main info of the citation appears -->	
 			<div class="center-box">
-				 <span class="author"><a href="#">
-				 		<!-- Cite first author's last name -->
-						{{ publication.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
-						{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
-						<!-- Or, if there are more than two authors, add "et al." -->
-						{% elif publication.publication_authors.all.count > 2 %} et al.
-						{% endif %}
-				 </span>
+				<div class="author-year-title">
+				 
+					 <span class="author"><a href="#">
+					 		<!-- Cite first author's last name -->
+							{{ publication.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
+							{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
+							<!-- Or, if there are more than two authors, add "et al." -->
+							{% elif publication.publication_authors.all.count > 2 %} et al.
+							{% endif %}
+					 </span>
 
-				 <!-- Publication year -->
-				 <span class="year"> ({{ publication.year }})
-				 </span>
-				 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
-				 {% if  publication.pub_type == 'A' %}
-				  <div class="publication-title"> 
-				 "{{ publication.title }}" </div> <div class="journalname"><em><a href="#">{{ publication.journal }}</a></em></div>
-				 <!-- For Books, put book title in italics -->
-				 {% elif publication.pub_type == 'B' %}
-				  <div class="publication-title"><em>{{ publication.title }}</em></div>
-				  <!-- For other Publication types, don't do anything special -->
-				 {% else %}
-				  <div class="publication-title"> {{ publication.title }}</div>
-				 {% endif %}
+					 <!-- Publication year -->
+					 <span class="year"> ({{ publication.year }})
+					 </span>
+					 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
+					 {% if  publication.pub_type == 'A' %}
+					  <div class="publication-title"> 
+					 "{{ publication.title }}" </div> <div class="journalname"><em><a href="#">{{ publication.journal }}</a></em></div>
+					 <!-- For Books, put book title in italics -->
+					 {% elif publication.pub_type == 'B' %}
+					  <div class="publication-title"><em>{{ publication.title }}</em></div>
+					  <!-- For other Publication types, don't do anything special -->
+					 {% else %}
+					  <div class="publication-title"> {{ publication.title }}</div>
+					 {% endif %}
+				</div>
 			</div>
 			
 			<!-- The left box when open, where all the details of the publciation appear -->
@@ -857,7 +863,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<!-- The bottom part where the user clicks to get the citations -->
 			<div class="bottom-box">
 				<div class="logo-top-bottom">{% load static %}
-					<img src="{% static "../media/site_pics/logos/quotes2.png" %}" alt="Logo" height='20' width='20'>
+					<img src="{% static "../media/site_pics/logos/New-Quotes-Logo-2.png" %}" alt="Logo" height='25' width='50' class="quotes-image">
 				</div>
 			</div>
 
@@ -889,12 +895,16 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 						 <!-- Year of publication -->
 						 ({{ cited.cited_pub.year }}); 
 						</span>
-						<span id="{{ cited.id }}" class="citation-description"><br>
+						<span id="{{ cited.id }}" class="citation-description">
+							<button class="citation-box">CITATION</button>
+							<button class="context-box">CONTEXT</button><br><br>
 							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
 
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
-							<span>
-								{{ cited.description }}
+							<span class="big-text-box">
+								<span class="actual-citation">
+									{{ cited.description }}
+								</span>
 							</span>
 						</span><br>
 					{% endfor %}
@@ -919,7 +929,6 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 						 ({{ cited.cited_pub.year }})
 					</p>
 					<div id="bottomLeftInfo{{ cited.id }}" class="bottom-left-info">
-						<div>
 						<span class="left-categories">TITLE</span> 
 						<span class="left-entries">{{ cited.cited_pub.title }}</span>
 						<br>
@@ -1030,7 +1039,6 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 							<span class="left-entries">{{ cited.cited_pub.journal.issue }}</span>
 							<br><small>More</small>
 						{% endif %}
-					</div>
 					</div>
 				{% endfor %}
 			</div>

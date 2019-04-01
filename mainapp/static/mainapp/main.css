@@ -29,7 +29,9 @@ body {
 /* Main box */
 .center-box {
   grid-area: newcenter;
-  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .top-box {
@@ -79,10 +81,12 @@ body {
 
 .left-box {
   grid-area: newleft;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #e6f2ff;
-  padding-right: 1.2em; 
-  padding-top: 100%;
-  border: 2px solid black;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
 }
 
 .bottom-left-box-open{
@@ -102,8 +106,12 @@ body {
 
 .right-box {
   grid-area: newright;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #e6f2ff;
-  border: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
 }
 
 .right-box-open {
@@ -124,8 +132,6 @@ body {
               ". newbottom newbottom newbottom ."
               "newbottomleftopen newbottomopen newbottomopen newbottomopen newbottomrightopen";
 }
-
-
 
 
 /* Open details element. */
@@ -162,6 +168,11 @@ a {
   font-style: italic;
 }
 
+.author-year-title{
+  padding: 5px;
+}
+
+
 .flex-container { 
   display: flex;
   flex-flow: row wrap;
@@ -175,11 +186,12 @@ a {
 }
 
 .citation-active{
-  font-style: 1.2em;
-  padding: 5px 5px;
-  width: 50%;
+  font-size: 1.1em;
+  margin: 5px 5px 15px 5px;
+  width: 100%;
   font-weight: 500;
   color: #1a0d00;
+  text-align: center;
 }
 
 .bottom-nested-citations:hover, .top-nested-citations:hover, .citation-active {
@@ -224,15 +236,48 @@ a {
 }
 
 
+.logo-top-bottom{
+  text-align: center;
+}
+
+
 
 .citation-description {
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 0px 7px 20px 7px;
   display: none;
   font-style: italic;
   color: #1a0d00;
+  text-align: center;
 }
 
+
+.citation-box, .context-box{
+  font-family: 'Courier New, monospace';
+  font-size: 0.8em;
+  font-weight: 500;
+  padding: 4px;
+  border: 1px solid #1a0d00;
+  margin-right: 10px;
+  background-color: white;
+  color: #1a0d00;
+  border-radius: 8px;
+}
+
+.actual-citation{
+  display: block;
+  text-align: left;
+  margin: 3px;
+}
+
+.big-text-box{
+  display: block;
+  background-color: white;
+  border: 2px solid black;
+  margin: 0px 20px;
+  border-radius: 8px;
+
+}
 
 
 .bottom-right-author, .bottom-right-abstract, .bottom-left-author, .bottom-left-info, .top-right-author, .top-right-abstract, .top-left-author, .top-left-info{
@@ -246,20 +291,18 @@ a {
 
 .bottom-info-image, .top-info-image{
   float: left;
-  margin-right: 10px;
-  filter: invert(100%);
 }
 
 .bottom-abstract-image, .top-abstract-image{
   float: right;
-  margin-left: 10px;
-}
+/*  margin-left: 2px;
+*/}
 
 .bottom-info-image:hover, .bottom-abstract-image:hover, .top-info-image:hover, .top-abstract-image:hover{
   cursor: pointer;
 }
 
-.image-active.bottom-abstract-image, .image-active.top-abstract-image {
+.image-active.bottom-abstract-image, .image-active.top-abstract-image, .image-active.bottom-info-image, .image-active.top-info-image {
   height: 20px;
   width: 20px;
   filter: invert(100%);
@@ -268,15 +311,11 @@ a {
 .image-active.bottom-info-image, .image-active.top-info-image{
   height: 20px;
   width: 20px;
-  filter: invert(0%);
-}
-
-.center-info-image{
   filter: invert(100%);
 }
 
+
 .center-left-info .left-categories, .center-right-abstract .abstract-category{
-  color: black;
   background-color: #b3d7ff;
   font-family: 'Courier New, monospace';
   font-size: 0.7em;
@@ -296,8 +335,7 @@ a {
 }
 
 .left-entries, .abstract-entry{
-  font-size: 0.9em;
-  color: #333333;
+  font-size: 0.8em;
   font-style: italic;
 }
 

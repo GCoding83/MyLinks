@@ -73,6 +73,9 @@ $(function(){
 
 
 /*2.*/
+/*PERSO: When I close the nested citation with info and/or asbtract open on left and right, the boxes with all the info stay open - BUT ONLY FOR THE TOP BOXES, NOT THE BOTTOM ONES.
+PERSO: Three things remain on "display: block": 1. top-left-box-open; 2. top-left-info (and the particular id); 3. top-left-author open-header (and the particular id)*/
+
 /*When user clicks on the citation in the top/bottom box, open the citation description and make the text bold and bigger.*/
 $(function(){
 	$('.top-nested-citations, .bottom-nested-citations').on('click', function(){	
@@ -83,6 +86,9 @@ $(function(){
 		} else {
 			var vertical = 'bottom';
 		}
+
+		/*Citation name (author and year) without the semi-colon*/
+		var noSemi = 
 
 		/*Declare the top/bottom-right-box-open*/
 		var rightBox = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-right-box-open');
@@ -124,7 +130,7 @@ $(function(){
 				$(anyLeftAuthor).hide();
 				$(leftBox).hide();
 				$(thisInfoImage).removeClass('image-active');
-				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
+				$(this).removeClass('citation-active');
 				$(this).next().hide(100);
 			/*if clicked citation abstract alone is showing (in the RIGHT box*/
 			} else {
@@ -133,7 +139,7 @@ $(function(){
 				$(anyRightAuthor).hide();
 				$(rightBox).hide();
 				$(thisAbstractImage).removeClass('image-active');
-				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
+				$(this).removeClass('citation-active');
 				$(this).next().hide(100);
 			}
 		/*else if only the clicked citation info is showing (in the LEFT box)*/
@@ -142,7 +148,7 @@ $(function(){
 			$(anyLeftInfo).hide();
 			$(anyLeftAuthor).hide();
 			$(leftBox).hide();
-			$(thisInfoImage).removeClass('image-active').addClass(vertical+'-nested-citations');
+			$(thisInfoImage).removeClass('image-active');
 			$(this).removeClass('citation-active');
 			$(this).next().hide(100);
 		
@@ -150,13 +156,16 @@ $(function(){
 		} else {
 			$(this).next().toggle(100);
 			if ($(this).hasClass('citation-active')){
-				$(this).removeClass('citation-active').addClass(vertical+'-nested-citations');
+				$(this).removeClass('citation-active');
 			}else{
-				$(this).removeClass(vertical+'-nested-citations').addClass('citation-active');
+				$(this).addClass('citation-active');
 			}
 		}
 	});	
 });
+
+
+
 
 
 /*3.*/
