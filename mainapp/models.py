@@ -76,7 +76,8 @@ class CitationMetadata(models.Model):
 	page_end_in_citer = models.IntegerField(null=True, blank=True)
 	page_begin_in_cited = models.IntegerField(null=True, blank=True)
 	page_end_in_cited = models.IntegerField(null=True, blank=True)
-	description = models.TextField(null=True, blank=True)
+	actual_citation = models.TextField(null=True, blank=True, default='No text for the citation is provided. Please see the citation Context.')
+	citation_context = models.TextField(null=True, blank=True, default='No context is provided for this citation. Please see the citation text.')
 
 	def __str__(self):
 		return "Citer: " + self.citer_pub.title + '; Cited: ' + self.cited_pub.title

@@ -499,14 +499,17 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 							 <!-- Year of publication -->
 							 ({{ citer.citer_pub.year }});
 						</span>
-						<span id="{{ citer.id }}" class="citation-description">
-							<button class="citation-box">CITATION</button>
-							<button class="context-box">CONTEXT</button><br><br>
+						<span id="{{ citer.id }}" class="citation-details">
+							<button class="citation-button button-active">CITATION</button>
+							<button class="context-button">CONTEXT</button><br><br>
 							<img class="top-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="top-abstract-image">	
 							<span class="big-text-box">
-								<span class="actual-citation">
-									{{ citer.description }}
+								<span class="actual-citation actual-citation-active">
+									{{ citer.actual_citation }}
+								</span>
+								<span class="citation-context">
+									{{ citer.citation_context }}
 								</span>
 							</span>
 						</span><br>
@@ -895,16 +898,20 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 						 <!-- Year of publication -->
 						 ({{ cited.cited_pub.year }}); 
 						</span>
-						<span id="{{ cited.id }}" class="citation-description">
-							<button class="citation-box">CITATION</button>
-							<button class="context-box">CONTEXT</button><br><br>
+						<span id="{{ cited.id }}" class="citation-details">
+							<button class="citation-button button-active">CITATION</button>
+							<button class="context-button">CONTEXT</button><br><br>
 							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
 
 							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
 							<span class="big-text-box">
-								<span class="actual-citation">
-									{{ cited.description }}
+								<span class="actual-citation actual-citation-active">
+									{{ cited.actual_citation }}
 								</span>
+								<span class="citation-context">
+									{{ cited.citation_context }}
+								</span>
+
 							</span>
 						</span><br>
 					{% endfor %}

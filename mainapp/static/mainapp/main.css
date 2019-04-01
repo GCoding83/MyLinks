@@ -242,7 +242,7 @@ a {
 
 
 
-.citation-description {
+.citation-details {
   font-size: 0.8em;
   padding: 0px 7px 20px 7px;
   display: none;
@@ -252,7 +252,7 @@ a {
 }
 
 
-.citation-box, .context-box{
+.citation-button, .context-button{
   font-family: 'Courier New, monospace';
   font-size: 0.8em;
   font-weight: 500;
@@ -264,10 +264,19 @@ a {
   border-radius: 8px;
 }
 
-.actual-citation{
-  display: block;
+.button-active{
+  filter: invert(100%);
+}
+
+
+.actual-citation, .citation-context{
   text-align: left;
   margin: 3px;
+  display: none;
+}
+
+.actual-citation-active, .citation-context-active{
+  display: block;
 }
 
 .big-text-box{

@@ -18,11 +18,12 @@ $(function(){
 
 
 
-/*BELOW ARE THE FOUR MAIN FUNCTIONS FOR HANDLING THE TOP AND BOTTOM BOX BEHAVIORS.*/
+/*BELOW ARE THE FIVE MAIN FUNCTIONS FOR HANDLING THE TOP AND BOTTOM BOX BEHAVIORS.*/
 /*1. The first handles box behavior when user clicks on ".top-box" or ".bottom-box", i.e. the boxes with the quotation logos*/
 /*2. The second handles box behavior when user clicks on ".top-nested-citations" or ".bottom-nested-citations", which opens the citation description*/
-/*3. The third handles box behavior when user clicks on ".top-abstract-image" or ".bottom-abstract-image", which opens the abstract box on the bottom-right or top-right */
-/*4. The fourth handles box behavior when user clicks on ".top-info-image" or ".bottom-info-image", which opens the details box on the bottom-left or top-left */
+/*3. The third handles box behavior when user clicks on ".context-box" or ".citation-box" inside the citation details.*/
+/*4. The fourth handles box behavior when user clicks on ".top-abstract-image" or ".bottom-abstract-image", which opens the abstract box on the bottom-right or top-right */
+/*5. The fifth handles box behavior when user clicks on ".top-info-image" or ".bottom-info-image", which opens the details box on the bottom-left or top-left */
 
 
 /*1.*/
@@ -86,9 +87,6 @@ $(function(){
 		} else {
 			var vertical = 'bottom';
 		}
-
-		/*Citation name (author and year) without the semi-colon*/
-		var noSemi = 
 
 		/*Declare the top/bottom-right-box-open*/
 		var rightBox = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-right-box-open');
@@ -165,10 +163,46 @@ $(function(){
 });
 
 
-
-
-
 /*3.*/
+/*Below is the main function for the ".context-button" or ".citation-button" inside the citation details */
+$(function(){
+	/*When user clicks on one of the boxes*/
+	$('body').on('click', '.citation-button, .context-button', function(){
+		/*Variable to determine whether the subling button is a citation or context button */
+		if ($(this).is('.citation-button')){
+			var otherbutton = $(this).siblings('.context-button');
+			var thistext = $(this).siblings('.big-text-box').find('.actual-citation');
+			var othertext = $(this).siblings('.big-text-box').find('.citation-context');
+		} else {
+			var otherbutton = $(this).siblings('.citation-button');
+			var thistext = $(this).siblings('.big-text-box').find('.citation-context');
+			var othertext = $(this).siblings('.big-text-box').find('.actual-citation');
+		}
+
+
+/*
+		PSEUDO:
+		If this box does not have have "active" then:
+		 	remove active from the other box
+		 	add active to this box
+		 	remove other text from text-box
+		 	add this text to text-box
+		 	*/
+		 /*If the button is not active when user clicks on it*/
+		 if (!$(this).hasClass('button-active')) {	
+		 	/*Remove active from the other button and add it to this button*/
+		 	$(otherbutton).removeClass('button-active');
+		 	$(this).addClass('button-active');
+
+		 	/*Hide the text associated with the other button and show the text associated with this button*/
+		 	$(othertext).hide();
+		 	$(thistext).show();
+		 }
+	});
+});
+
+
+/*4.*/
 /*Below is the main function for the TOP/BOTTOM-RIGHT (i.e. abstract) box*/
 /*When user clicks on the abstract image in the top/bottom box, open the top/bottom right box.*/
 $(function(){
@@ -183,8 +217,8 @@ $(function(){
 		}
 
 		/*Declare the variables that store the unique id'd of each author and abstract of the clicked description */
-		var thisAuthorId = vertical+"RightAuthor" + $(this).closest('.citation-description').attr('id');
-		var thisAbstractId = vertical+"RightAbstract" + $(this).closest('.citation-description').attr('id');
+		var thisAuthorId = vertical+"RightAuthor" + $(this).closest('.citation-details').attr('id');
+		var thisAbstractId = vertical+"RightAbstract" + $(this).closest('.citation-details').attr('id');
 		/*Declare ANY citation abstracts and authors in this box*/
 		var anyBoxAuthor = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-right-box-open').find('.'+vertical+'-right-author');
 		var anyBoxAbstract = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-right-box-open').find('.'+vertical+'-right-abstract');
@@ -228,7 +262,7 @@ $(function(){
 });
 
 
-/*4.*/
+/*5.*/
 /*Below is the main function for the TOP/BOTTOM-LEFT (i.e. info) box*/
 /*When user clicks on the info image in the top/bottom box, open the top/bottom right box.*/
 $(function(){
@@ -243,8 +277,8 @@ $(function(){
 		}
 
 		/*Declare the variables that store the unique id'd of each author and info of the clicked description */
-		var thisAuthorId = vertical+"LeftAuthor" + $(this).closest('.citation-description').attr('id');
-		var thisInfoId = vertical+"LeftInfo" + $(this).closest('.citation-description').attr('id');
+		var thisAuthorId = vertical+"LeftAuthor" + $(this).closest('.citation-details').attr('id');
+		var thisInfoId = vertical+"LeftInfo" + $(this).closest('.citation-details').attr('id');
 		/*Declare ANY citation info and authors in this box*/
 		var anyBoxAuthor = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-left-box-open').find('.'+vertical+'-left-author');
 		var anyBoxInfo = $(this).closest('.'+vertical+'-box-open').siblings('.'+vertical+'-left-box-open').find('.'+vertical+'-left-info');
