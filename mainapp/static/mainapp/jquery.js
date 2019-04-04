@@ -194,6 +194,10 @@ $(function(){
 		 	$(otherbutton).removeClass('button-active');
 		 	$(this).addClass('button-active');
 
+		 	/*Remove active from the other text and add it to this text*/
+		 	$(othertext).removeClass('block-active');
+		 	$(thistext).addClass('block-active');
+
 		 	/*Hide the text associated with the other button and show the text associated with this button*/
 		 	$(othertext).hide();
 		 	$(thistext).show();

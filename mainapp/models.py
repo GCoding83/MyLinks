@@ -33,7 +33,7 @@ class Publication(models.Model):
 	citation = models.ManyToManyField('self', through='CitationMetadata', through_fields=('citer_pub', 'cited_pub'), symmetrical=False, related_name='citations')
 
 	def __str__(self):
-		return str(self.title + ' - ' + self.pub_type)
+		return str(self.title + ' (' + str(self.year) + ')' + ' - ' + self.pub_type + str(self.id))
 
 class Author(models.Model):
 	first_name = models.CharField(max_length=30, blank=True, null=True, help_text='If author only has one name (e.g. Aristotle), enter it as a last name')
@@ -48,6 +48,7 @@ class Author(models.Model):
 		elif self.first_name == None and self.middle_name:
 			return str(self.middle_name) + ' ' + str(self.last_name)
 		return str(self.first_name) + ' ' + str(self.middle_name) + ' ' + str(self.last_name)
+
 
 #Intermediary table 
 class PublicationAuthor(models.Model):

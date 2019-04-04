@@ -1,459 +1,7 @@
 {% extends "mainapp/base.html" %}
 {% block content %}
-
-<!--My practice database:
-	Pub order: 
-	1) Kant
-		a.Hume, b. Descartes
-	2) Hume
-		a. Descartes
-	3) Descartes
-		a. Aristotle
-	4) Hume et al. (Impossible book)
-		a. Descartes, b. Hume, c. Kant
-	5) Singer
-		a. Hume et al. (Impossible book)
-	6) Aristotle
-		none
--->
-
-<!-- 
-kant = publications.first()
-***kant.citations.all()
-		>>><QuerySet [<Publication: Impossible Modern Book - B>]>
-		PERSO: Hume et al., Impossible Book
-		EXPL: "citations" gives you the authors that cite Kant
-		
-		VS
-***kant.citation.all()
-		>>><QuerySet [<Publication: An Enquiry Concerning Human Understanding - B>, <Publication: Discours de la Methode - B>]>
-		PERSO: Hume, Descartes
-		EXPL: "citation" gives you Kant's own citations
-		
-		VS
-***kant.cited_pubs.all()
-		>>><QuerySet [<CitationMetadata: Citer: Impossible Modern Book; Cited: Critique of Pure Reason>]>
-		EXPL: "cited_pubs" gives you the sets in which Kant is the CITED
-		VS
-***kant.citer_pubs.all()
-		>>><QuerySet [<CitationMetadata: Citer: Critique of Pure Reason; Cited: An Enquiry Concerning Human Understanding>, <CitationMetadata: Citer: Critique of Pure Reason; Cited: Discours de la Methode>]>
-		EXPL: "citer_pubs" gives you the sets in which Kant is the CITER
--->
-
-
-<!-- Inside for-loop for publication:
-	FIRST AUTHOR OF PUB: 
-		publication.author.first
-	LAST NAME OF FIRST AUTHOR OF PUB: 
-		publication.author.first.last_name
-	PYB YEAR:
-		publication.year
-	FIRST CITATION:
-		publication.citation.first
-	LAST NAME OF FIRST AUTHOR OF FIRST CITATION:
-		publication.citation.first.author.first.last_name
-	YEAR OF FIRST CITED_PUB:
-		publication.citation.first.year
-	TITLE OF FIRST CITED_PUB:
-		publication.citation.first.title
-	DESCRIPTION OF FIRST CITED_PUB:
-		publication.cited_pubs.first.description
-	COUNT OF AUTHORS IN A PUBLICATION:
-		publication.author.all.count 
-	AUTHOR RANK:
-	{% for publication in publications %}
-		{{ publication.publication_authors.first.author_rank }}
-	{% endfor %}
-					OR
-	{% for author in authors %}
-		{{ author.publication_authors.first.author_rank }}
-	{% endfor %}
-	FIND AUTHOR RANK WITHIN A CITATION:
-	{% for publication in publications.all %}
-		{% for citer in publication.cited_pubs.all %}
-			{{ citer.cited_pub.publication_authors.first.author_rank }}
-		{% endfor %}
-	{% endfor %}
-
-
-<br><br>
-
-{% for author in authors %}
-	{{ author.publication_authors.first.author_rank }}
-{% endfor %}<br><br>
--->
-<!-- 
-	{% for publication in publications %}
-		<div>
-		{{ publication.title }}
-	 		{% for citer in publication.cited_pubs.all %}		
-			<div id='{{ citer.id }}' class="clickedclass">
-				Cite first author's last name
-				 {{ citer.citer_pub.author.first.last_name }}
-			{% endfor %}
-			</div>
-			<br>
-		</div>
-	{% endfor %}
-	<div id="i">
-		<div class="hideorshow">
-		Yo
-		</div>
-	</div>
- -->
-
-<!-- 
-	{% for publication in publications %}
-		<div>
-		{{ publication.title }}
-	 		{% for citer in publication.cited_pubs.all %}		
-			<div id='{{ citer.id }}' class="clickedclass">
-				 {{ citer.citer_pub.author.first.last_name }}
-			{% endfor %}
-			</div>
-			<br>
-		</div>
-	{% endfor %}
-	{% for publication in publications %}
-		{% for citer in publication.cited_pubs.all %}
-			<div id='info{{ citer.id }}' class="myabstract">Abstract: {{ citer.cited_pub.abstract }}</div><br>
-		{% endfor %}
-	{% endfor %}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
- -->
-
-
-<!-- myclass = Class.objects.all() 
-	 myclass.get(id=8) -->
-
-<!-- <div class="test-flex-main-container">
-	main container
-	<div class="test-flex-inner-container">
-		inner container
-		<div class="test-flex-item">
-			flex items
-		</div>
-	</div>
-</div>
- -->
-<!-- 
-{% for publication in publications %}
-	FIRST AUTHOR NAME:{{ publication.publication_authors.first.author.last_name }}<br>
-	FIRST AUTHOR RANK: {{ publication.publication_authors.first.author_rank }}<br>
-	LOOP:<br>
-	{% for pubauth in publication.publication_authors.all %}
-		TITLE: {{ pubauth.publication.title }}, 
-		AUTHOR: {{ pubauth.author.last_name }}, 
-		RANK: {{ pubauth.author_rank }}<br>
-	{% endfor %}<br>
-{% endfor %}
-
-<br><br>
-
-{% for author in authors %}
-	{{ author.publication_authors.all.author_rank }}
-{% endfor %}
-<br><br>
-
-TRYING WITH CITER AND CITED_PUBS.ALL: 
-{% for publication in publications.all %}
-	{% for citer in publication.cited_pubs.all %}<br>
-		TITLE: {{ citer.cited_pub.title }}<br>
-		QUERY AUTHOR DIRECTLY: {{ citer.cited_pub.author.first.last_name }} <br>
-		QUERY THROUGH PUB_AUTH: {{ citer.cited_pub.publication_authors.first.author.last_name }}<br>
-		NEW BIT: 
-		{% for object in citer.cited_pub.publication_authors.all %}
-			{{ object.author.first.author_rank }}
-		{% endfor %}<br>
-	{% endfor %}
-{% endfor %}
-<br>
-<br>
-<br>
-<br>
-ORDERINGS:<br><br>
-
-1. Loop through authors:<br>
- --><!-- 
-{% for author in authors %}
-	{{ author.last_name }}
-{% endfor %}
--->
-<!-- Ross, Moore, Singer, Aristotle, Plato, Socrates, Wittgenstein, Frege, Russell, Locke, Hume, Kant, Descartes, Korsgaard, Velleman<br><br>
-
-
-2. Loop through publications:<br> -->
-<!-- 
-{% for publication in publications %}
-	{{ publication.title }}
-{% endfor %}
- -->
-<!-- Critique of Pure Reason (Kant),<br>
-An Enquiry Concerning Human Understanding (Hume),<br> 
-Discours de la Methode (Descartes), <br>
-Impossible Modern Book (Hume, Kant, Descartes),<br> 
-Contemporaries Citing Impossible Book (Singer),<br>
-Nichomachian Ethics (Aristotle),<br>
-Self-Constitution (Korsgaard, Velleman)<br>
-The Ancient Book Never Written (Aristotle, Plato)<br><br>
-
-
-3. Loop through publication_authors VIA PUBLICATIONS:<br>
-
-{% for publication in publications %}
-	{% for pubauth in publication.publication_authors.all %}
-		{{ pubauth }}<br>
-	{% endfor %}
-{% endfor %}<br><br>
-
-
-Kant in Critique of Pure Reason<br>
-David Hume in An Enquiry Concerning Human Understanding<br>
-Descartes in Discours de la Methode<br>
-Descartes in Impossible Modern Book<br>
-David Hume in Impossible Modern Book<br>
-Kant in Impossible Modern Book<br>
-Peter Singer in Contemporaries Citing Impossible Book<br>
-Aristotle in Nichomachian Ethics<br>
-David Velleman in Self-Constitution<br>
-Christine Korsgaard in Self-Constitution<br>
-Plato in The Ancient Book Never Written<br>
-Aristotle in The Ancient Book Never Written<br>
--------PERSO: It naturally sorts first by publication (position in my publication table) and then by position in the the PublicationAuthor inline table. However, since I added a Meta class for the PublicationAuthor table, it now also orders first by publication, and then by author_rank.<br><br>
-
-4. Loop through publication_authors VIA AUTHORS:<br> -->
-
-<!-- {% for author in authors %}
-	{% for pubauth in author.publication_authors.all %}
-		{{ pubauth }}<br>
-	{% endfor %}
-{% endfor %} -->
-<!-- Peter Singer in Contemporaries Citing Impossible Book<br>
-Aristotle in Nichomachian Ethics<br>
-Aristotle in The Ancient Book Never Written<br>
-Plato in The Ancient Book Never Written<br>
-David Hume in An Enquiry Concerning Human Understanding<br>
-David Hume in Impossible Modern Book<br>
-Kant in Critique of Pure Reason<br>
-Kant in Impossible Modern Book<br>
-Descartes in Discours de la Methode<br>
-Descartes in Impossible Modern Book<br>
-Christine Korsgaard in Self-Constitution<br>
-David Velleman in Self-Constitution<br>
-------PERSO: It sorts first by author (position in my author table), OMITTING AUTHORS WITHOUT PUBLICATIONS, and then it sorts by position in the publication table.<br><br>
-
-
-5. Loop through the PublicationAuthor object directly:<br>
-{% for pubauth in publicationauthors %}
-	{{ pubauth }}<br>
-{% endfor%}<br>
----PERSO: Naturally sorts exactly like when you loop through publication_authors VIA PUBLICATIONS (as in (3)). However, I added in my model a Meta class for it to sort first by publication, and then by author_rank.<br><br>
-
-6. Loop through publication citations:<br> -->
-<!-- {% for publication in publications %}
-	{{ publication.title }} cites: 
-	{% for citation in publication.citation.all %}
-		{{ citation.title }}, <br>
-	{% endfor %}
-{% endfor %} -->
-<!-- Critique of Pure Reason cites:<br>
-	An Enquiry Concerning Human Understanding, 
-	Discours de la Methode
-An Enquiry Concerning Human Understanding cites: <br>
-	Discours de la Methode
-Discours de la Methode cites: <br>
-	Nichomachian Ethics, 
-	The Ancient Book Never Written
-Impossible Modern Book cites: <br>
-	Discours de la Methode, 
-	An Enquiry Concerning Human Understanding, 
-	Critique of Pure Reason
-Contemporaries Citing Impossible Book cites: <br>
-	Impossible Modern Book
-Nichomachian Ethics cites: <br>
-	NOBODY
-Self-Constitution cites:<br>
-	Critique of Pure Reason
-The Ancient Book Never Written cites: <br>
-	NOBODY
-Ross and Moore Like Kant Too cites: <br>
-	Critique of Pure Reason,
-	Impossible Modern Book 
-----PERSO: Naturally sorts by publication order in my databse, and then again for the cited.<br><br>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
-{% for publication in publications %}
-	{% for citer in publication.cited_pubs.all %}
-		{{ citer }}<br>
-		ALL AUTHORS:<br>
-		{% for author in citer.cited_pub.author.all %}
-			{{ author }}<br>
-		{% endfor %}<br>
-	{% endfor %}
-{% endfor %}<br><br>
-<br>
-<br>
-<br>
-<br>
-<br> -->
-
-
-<!-- 
-{% for author in authors %}
-	{{ author.last_name }}
-{% endfor %}
--->
-<!-- Ross, Moore, Singer, Aristotle, Plato, Socrates, Wittgenstein, Frege, Russell, Locke, Hume, Kant, Descartes, Korsgaard, Velleman<br><br>
-
-
-2. Loop through publications:<br> -->
-<!-- 
-{% for publication in publications %}
-	{{ publication.title }}
-{% endfor %}
- -->
-<!-- Critique of Pure Reason (Kant),<br>
-An Enquiry Concerning Human Understanding (Hume),<br> 
-Discours de la Methode (Descartes), <br>
-Impossible Modern Book (Hume, Kant, Descartes),<br> 
-Contemporaries Citing Impossible Book (Singer),<br>
-Nichomachian Ethics (Aristotle),<br>
-Self-Constitution (Korsgaard, Velleman)<br>
-The Ancient Book Never Written (Aristotle, Plato)<br><br>
-
-
-3. Loop through publication_authors VIA PUBLICATIONS:<br>
-
-{% for publication in publications %}
-	{% for pubauth in publication.publication_authors.all %}
-		{{ pubauth }}<br>
-	{% endfor %}
-{% endfor %}<br><br>
-
-
-Kant in Critique of Pure Reason<br>
-David Hume in An Enquiry Concerning Human Understanding<br>
-Descartes in Discours de la Methode<br>
-Descartes in Impossible Modern Book<br>
-David Hume in Impossible Modern Book<br>
-Kant in Impossible Modern Book<br>
-Peter Singer in Contemporaries Citing Impossible Book<br>
-Aristotle in Nichomachian Ethics<br>
-David Velleman in Self-Constitution<br>
-Christine Korsgaard in Self-Constitution<br>
-Socrates in The Ancient Book Never Written<br>
-Plato in The Ancient Book Never Written<br>
-Aristotle in The Ancient Book Never Written<br>
--------PERSO: It naturally sorts first by publication (position in my publication table) and then by position in the the PublicationAuthor inline table. However, since I added a Meta class for the PublicationAuthor table, it now also orders first by publication, and then by author_rank.<br><br>
-PERSO: Why am I getting "Plato, and Aristotle Socrates" for "Socrates et al" in the boxes below, whereas for Descartes et al, I am getting the correct order "Descartes, David Hume, and Kant"?<br><br>
-
-
-4. Loop through publication_authors VIA AUTHORS:<br> -->
-
-<!-- {% for author in authors %}
-	{% for pubauth in author.publication_authors.all %}
-		{{ pubauth }}<br>
-	{% endfor %}
-{% endfor %} -->
-<!-- Peter Singer in Contemporaries Citing Impossible Book<br>
-Aristotle in Nichomachian Ethics<br>
-Aristotle in The Ancient Book Never Written<br>
-Plato in The Ancient Book Never Written<br>
-David Hume in An Enquiry Concerning Human Understanding<br>
-David Hume in Impossible Modern Book<br>
-Kant in Critique of Pure Reason<br>
-Kant in Impossible Modern Book<br>
-Descartes in Discours de la Methode<br>
-Descartes in Impossible Modern Book<br>
-Christine Korsgaard in Self-Constitution<br>
-David Velleman in Self-Constitution<br>
-------PERSO: It sorts first by author (position in my author table), OMITTING AUTHORS WITHOUT PUBLICATIONS, and then it sorts by position in the publication table.<br><br>
-
-
-5. Loop through the PublicationAuthor object directly:<br>
-{% for pubauth in publicationauthors %}
-	{{ pubauth }}<br>
-{% endfor%}<br>
----PERSO: Naturally sorts exactly like when you loop through publication_authors VIA PUBLICATIONS (as in (3)). However, I added in my model a Meta class for it to sort first by publication, and then by author_rank.<br><br>
-
-6. Loop through publication citations:<br> -->
-<!-- {% for publication in publications %}
-	{{ publication.title }} cites: 
-	{% for citation in publication.citation.all %}
-		{{ citation.title }}, <br>
-	{% endfor %}
-{% endfor %} -->
-<!-- Critique of Pure Reason cites:<br>
-	An Enquiry Concerning Human Understanding, 
-	Discours de la Methode
-An Enquiry Concerning Human Understanding cites: <br>
-	Discours de la Methode
-Discours de la Methode cites: <br>
-	Nichomachian Ethics, 
-	The Ancient Book Never Written
-Impossible Modern Book cites: <br>
-	Discours de la Methode, 
-	An Enquiry Concerning Human Understanding, 
-	Critique of Pure Reason
-Contemporaries Citing Impossible Book cites: <br>
-	Impossible Modern Book
-Nichomachian Ethics cites: <br>
-	NOBODY
-Self-Constitution cites:<br>
-	Critique of Pure Reason
-The Ancient Book Never Written cites: <br>
-	NOBODY
-Ross and Moore Like Kant Too cites: <br>
-	Critique of Pure Reason,
-	Impossible Modern Book 
-----PERSO: Naturally sorts by publication order in my databse, and then again for the cited.<br><br> -->
-
-<!-- <br>
-<br>
-<br>
-<br>
-<br>
-
-THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
-{% for publication in publications %}
-	{% for citer in publication.cited_pubs.all %}
-		{{ citer }}<br>
-		ALL AUTHORS:<br>
-		{% for author in citer.cited_pub.author.all %}
-			{{ author }}<br>
-		{% endfor %}<br>
-	{% endfor %}
-{% endfor %}<br><br>
-<br>
-<br>
-<br>
-<br>
-<br> -->
-
- 
-
 <!-- Real code -->
 
-{% for publication in publications %}
 <article class="media content-section">
 	<div class="media-body">
 
@@ -473,19 +21,19 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="top-box-open">
 				<p class="open-header top-center-author">
 					<!-- Cite first author's last name -->
-					<a href="#">{{ publication.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
-					{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
+					<a href="#">{{ object.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
+					{% if object.publication_authors.all.count == 2 %}and <a href='#'>{{ object.publication_authors.last.author.last_name }}</a>
 					<!-- Or, if there are more than two authors, add "et al." -->
-					{% elif publication.publication_authors.all.count > 2 %} et al.
+					{% elif object.publication_authors.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }}) is cited by:
+						({{ object.year }}) is cited by:
 				</p>
 
 
 				<!-- Creating a flexbox container, which will display all the citations from this publication -->
 				<p class='flex-container'> 
 					<!-- For each citer_pub that cites the cited_pub (i.e. our publication) -->
-		 			{% for citer in publication.cited_pubs.all %}		
+		 			{% for citer in object.cited_pubs.all %}		
 						<span class="top-nested-citations">
 							<!-- Cite first author's last name -->
 							 {{ citer.citer_pub.publication_authors.first.author.last_name }}
@@ -521,7 +69,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 			<!-- This is the box that opens on the top left to display the citation info when user clicks on image -->
 			<div class="top-left-box-open">
-				{% for citer in publication.cited_pubs.all %}
+				{% for citer in object.cited_pubs.all %}
 					<p id="topLeftAuthor{{ citer.id }}" class="top-left-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
 						Details for {{ citer.citer_pub.publication_authors.first.author.last_name }}
@@ -655,7 +203,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 			<!-- This is the box that opens on the top right to display the citation abstract when user clicks on image -->
 			<div class="top-right-box-open">
-				{% for citer in publication.cited_pubs.all %}
+				{% for citer in object.cited_pubs.all %}
 					<p id="topRightAuthor{{ citer.id }}" class="top-right-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
 						Abstract for {{ citer.citer_pub.publication_authors.first.author.last_name }}
@@ -683,30 +231,28 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="center-box">
 				<div class="author-year-title">
 				 
-					 <span class="author"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.id %}">
+					 <span class="author"><a href="#">
 					 		<!-- Cite first author's last name -->
-							{{ publication.publication_authors.first.author.last_name }}</a>					
-							<!-- Then, if there are 2 authors, cite both -->
-							{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
+							{{ object.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
+							{% if object.publication_authors.all.count == 2 %}and <a href='#'>{{ object.publication_authors.last.author.last_name }}</a>
 							<!-- Or, if there are more than two authors, add "et al." -->
-							{% elif publication.publication_authors.all.count > 2 %} et al.
+							{% elif object.publication_authors.all.count > 2 %} et al.
 							{% endif %}
 					 </span>
 
 					 <!-- Publication year -->
-					 <span class="year"> ({{ publication.year }})
+					 <span class="year"> ({{ object.year }})
 					 </span>
 					 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
-					 {% if  publication.pub_type == 'A' %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}"> 
-					 "{{ publication.title }}"</a> </div> <div class="journalname"><em><a href="#">{{ publication.journal }}</a></em></div>
+					 {% if  object.pub_type == 'A' %}
+					  <div class="publication-title"> 
+					 "{{ object.title }}" </div> <div class="journalname"><em><a href="#">{{ object.journal }}</a></em></div>
 					 <!-- For Books, put book title in italics -->
-					 {% elif publication.pub_type == 'B' %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}">
-					  	<em>{{ publication.title }}</em></a></div>
+					 {% elif object.pub_type == 'B' %}
+					  <div class="publication-title"><em>{{ object.title }}</em></div>
 					  <!-- For other Publication types, don't do anything special -->
 					 {% else %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}"> {{ publication.title }}<</div>
+					  <div class="publication-title"> {{ object.title }}</div>
 					 {% endif %}
 				</div>
 			</div>
@@ -714,71 +260,71 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<!-- The left box when open, where all the details of the publciation appear -->
 			<div class="left-box-open">
 				<p class="open-header center-left-author"> 
-				Details for {{ publication.publication_authors.first.author.last_name }}
-					{% if publication.publication_authors.all.count == 2 %}
-						and {{ publication.publication_authors.last.author.last_name }}
-					{% elif publication.publication_authors.all.count > 2 %} et al.
+				Details for {{ object.publication_authors.first.author.last_name }}
+					{% if object.publication_authors.all.count == 2 %}
+						and {{ object.publication_authors.last.author.last_name }}
+					{% elif object.publication_authors.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }})</p>
+						({{ object.year }})</p>
 					<div class="center-left-info">
 						<span class="left-categories">TITLE</span> 
-						<span class="left-entries">{{ publication.title }}</span>
+						<span class="left-entries">{{ object.title }}</span>
 						<br>
 						<!-- Authors -->
 						<span class="left-categories">AUTHORS</span> 
 
 						<!-- If there is just 1 author -->
-						{% if publication.publication_authors.all.count == 1 %}
+						{% if object.publication_authors.all.count == 1 %}
 
 							<!-- Show full name of first author -->
-							{% if publication.publication_authors.first.author.first_name and publication.publication_authors.first.author.middle_name %}
+							{% if object.publication_authors.first.author.first_name and object.publication_authors.first.author.middle_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</span>
-							{% elif publication.publication_authors.first.author.first_name %}
+								{{ object.publication_authors.first.author.first_name }} {{ object.publication_authors.first.author.middle_name }} {{ object.publication_authors.first.author.last_name }}</span>
+							{% elif object.publication_authors.first.author.first_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }}</span> 
-							{% elif publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</span>
+								{{ object.publication_authors.first.author.first_name }} {{ object.publication_authors.first.author.last_name }}</span> 
+							{% elif object.publication_authors.first.author.middle_name %}
+								<span class="left-entries">{{ object.publication_authors.first.author.middle_name }} {{ object.publication_authors.first.author.last_name }}</span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries">{{ object.publication_authors.first.author.last_name }}</span> 
 							{% endif %}
 
 						<!-- Else if there are two authors -->
-						{% elif publication.publication_authors.all.count == 2 %}
+						{% elif object.publication_authors.all.count == 2 %}
 
 							<!-- Show full publication of first author followed by "and"-->
-							{% if publication.publication_authors.first.author.first_name and publication.publication_authors.first.author.middle_name %}
+							{% if object.publication_authors.first.author.first_name and object.publication_authors.first.author.middle_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }} and</span>
-							{% elif publication.publication_authors.first.author.first_name %}
+								{{ object.publication_authors.first.author.first_name }} {{ object.publication_authors.first.author.middle_name }} {{ object.publication_authors.first.author.last_name }} and</span>
+							{% elif object.publication_authors.first.author.first_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }} and</span> 
-							{% elif publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }} and</span>
+								{{ object.publication_authors.first.author.first_name }} {{ object.publication_authors.first.author.last_name }} and</span> 
+							{% elif object.publication_authors.first.author.middle_name %}
+								<span class="left-entries">{{ object.publication_authors.first.author.middle_name }} {{ object.publication_authors.first.author.last_name }} and</span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries">{{ object.publication_authors.first.author.last_name }} and</span> 
 							{% endif %}
 
 							<!-- Show second author -->
-							{% if publication.publication_authors.last.author.first_name and publication.publication_authors.last.author.middle_name %}
+							{% if object.publication_authors.last.author.first_name and object.publication_authors.last.author.middle_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</span>
-							{% elif publication.publication_authors.last.author.first_name %}
+								{{ object.publication_authors.last.author.first_name }} {{ object.publication_authors.last.author.middle_name }} {{ object.publication_authors.last.author.last_name }}</span>
+							{% elif object.publication_authors.last.author.first_name %}
 								<span class="left-entries">
-								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.last_name }}</span> 
-							{% elif publication.publication_authors.last.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</span>
+								{{ object.publication_authors.last.author.first_name }} {{ object.publication_authors.last.author.last_name }}</span> 
+							{% elif object.publication_authors.last.author.middle_name %}
+								<span class="left-entries">{{ object.publication_authors.last.author.middle_name }} {{ object.publication_authors.last.author.last_name }}</span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries">{{ object.publication_authors.first.author.last_name }}</span> 
 							{% endif %}
 
 						<!-- Else if there are more than two authors -->
-						{% elif publication.publication_authors.all.count > 2 %}
+						{% elif object.publication_authors.all.count > 2 %}
 							<!-- Loop through all citation authors -->
-							{% for pubauth in publication.publication_authors.all %}
+							{% for pubauth in object.publication_authors.all %}
 
 								<!-- If the author is the last one, then use "and" -->
-								{% if pubauth.author == publication.publication_authors.last.author %}
+								{% if pubauth.author == object.publication_authors.last.author %}
 									<!-- Show full name of first author -->
 									{% if pubauth.author.first_name and author.middle_name %}
 										<span class="left-entries">
@@ -814,22 +360,22 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 						{% endif %}
 						<br>
 						<span class="left-categories">YEAR</span> 
-						<span class="left-entries">{{ publication.year }}</span>
+						<span class="left-entries">{{ object.year }}</span>
 						<br>
 						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
 						<span class="left-categories">TYPE</span> 
-						<span class="left-entries">{{ publication.get_pub_type_display }}</span>
+						<span class="left-entries">{{ object.get_pub_type_display }}</span>
 
-						{% if publication.pub_type == 'A' %}
+						{% if object.pub_type == 'A' %}
 							<br>
 							<span class="left-categories">JOURNAL</span> 
-							<span class="left-entries">{{ publication.journal.journal_name }}</span>
+							<span class="left-entries">{{ object.journal.journal_name }}</span>
 							<br>
 							<span class="left-categories">VOLUME</span> 
-							<span class="left-entries">{{ publication.journal.volume }}</span>
+							<span class="left-entries">{{ object.journal.volume }}</span>
 							<br>
 							<span class="left-categories">ISSUE</span> 
-							<span class="left-entries">{{ publication.journal.issue }}</span>
+							<span class="left-entries">{{ object.journal.issue }}</span>
 							<br><small>More</small>
 						{% endif %}
 					</div>
@@ -850,17 +396,17 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<article class="right-box-open">
 				<!-- Creating a flexbox container, which will display all the citations from this publication -->
 				<header class="open-header center-right-author">Abstract for
-				{{ publication.publication_authors.first.author.last_name }}
-					{% if publication.publication_authors.all.count == 2 %}
-						and {{ publication.publication_authors.last.author.last_name }}
-					{% elif publication.publication_authors.all.count > 2 %} et al.
+				{{ object.publication_authors.first.author.last_name }}
+					{% if object.publication_authors.all.count == 2 %}
+						and {{ object.publication_authors.last.author.last_name }}
+					{% elif object.publication_authors.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }})</header>
+						({{ object.year }})</header>
 				<div class="center-right-abstract">
 					<span class="abstract-category">
 						ABSTRACT</span>
 					<span class="abstract-entry">
-						{{ publication.abstract }}</span>
+						{{ object.abstract }}</span>
 				</div>
 			</article>
 
@@ -876,17 +422,17 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="bottom-box-open">
 				<p class="open-header bottom-center-author">
 					<!-- Cite first author's last name -->
-					<a href="#">{{ publication.publication_authors.first.author.last_name }}</a>	<!-- Then, if there are 2 authors, cite both -->
-					{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
+					<a href="#">{{ object.publication_authors.first.author.last_name }}</a>	<!-- Then, if there are 2 authors, cite both -->
+					{% if object.publication_authors.all.count == 2 %}and <a href='#'>{{ object.publication_authors.last.author.last_name }}</a>
 					<!-- Or, if there are more than two authors, add "et al." -->
-					{% elif publication.publication_authors.all.count > 2 %} et al.
+					{% elif object.publication_authors.all.count > 2 %} et al.
 					{% endif %}
-						({{ publication.year }}) cites:
+						({{ object.year }}) cites:
 				</p>
 				<!-- Creating a flexbox container, which will display all the citations from this publication -->
 				<p class='flex-container'>
 					<!-- For each cited_pub cited by the citer_pub (i.e. our publication) -->
-		 			{% for cited in publication.citer_pubs.all %}		
+		 			{% for cited in object.citer_pubs.all %}		
 						<span class="bottom-nested-citations">
 						<!-- Cite first author's last name -->
 						 {{ cited.cited_pub.publication_authors.first.author.last_name }}
@@ -923,7 +469,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 			<!-- This is the box that opens on the bottom left to display the citation info when user clicks on image -->
 			<div class="bottom-left-box-open">
-				{% for cited in publication.citer_pubs.all %}
+				{% for cited in object.citer_pubs.all %}
 					<p id="bottomLeftAuthor{{ cited.id }}" class="bottom-left-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
 						Details for {{ cited.cited_pub.publication_authors.first.author.last_name }}
@@ -1055,7 +601,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
 			<div class="bottom-right-box-open">
-				{% for cited in publication.citer_pubs.all %}
+				{% for cited in object.citer_pubs.all %}
 					<p id="bottomRightAuthor{{ cited.id }}" class="bottom-right-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
 						Abstract for {{ cited.cited_pub.publication_authors.first.author.last_name }}
@@ -1080,5 +626,4 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 		</div>
 	</div>
 </article>
-{% endfor %} 
 {% endblock content %}

@@ -275,7 +275,7 @@ a {
   display: none;
 }
 
-.actual-citation-active, .citation-context-active{
+.block-active{
   display: block;
 }
 
