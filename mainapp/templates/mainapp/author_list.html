@@ -2,7 +2,8 @@
 {% block content %}
 
 {% for author in authors %}
-	{{ author }}<br>
+	{{ author }}
+	{{ author.id }}<br>
 {% endfor %}
 
 {% endblock content %}

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
     'crispy_forms', #We included this to add nice styles to our forms. Installed doing: pip install django-crispy-forms
+    'django_autoslug', #For using slugs in URLs
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

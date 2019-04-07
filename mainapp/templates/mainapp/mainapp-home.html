@@ -538,7 +538,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 					<div id="topLeftInfo{{ citer.id }}" class="top-left-info">
 						<!-- Title -->
 						<span class="left-categories">TITLE</span> 
-						<span class="left-entries">{{ citer.citer_pub.title }}</span>
+						<span class="left-entries"><a href="{% url 'publication-detail-page' citer.citer_pub.slug citer.citer_pub.id %}">{{ citer.citer_pub.title }}</a></span>
 						<br>
 
 						<!-- Authors -->
@@ -683,11 +683,11 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="center-box">
 				<div class="author-year-title">
 				 
-					 <span class="author"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.id %}">
+					 <span class="author"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">
 					 		<!-- Cite first author's last name -->
 							{{ publication.publication_authors.first.author.last_name }}</a>					
 							<!-- Then, if there are 2 authors, cite both -->
-							{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
+							{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 							<!-- Or, if there are more than two authors, add "et al." -->
 							{% elif publication.publication_authors.all.count > 2 %} et al.
 							{% endif %}
@@ -698,15 +698,15 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 					 </span>
 					 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
 					 {% if  publication.pub_type == 'A' %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}"> 
+					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.slug publication.id %}"> 
 					 "{{ publication.title }}"</a> </div> <div class="journalname"><em><a href="#">{{ publication.journal }}</a></em></div>
 					 <!-- For Books, put book title in italics -->
 					 {% elif publication.pub_type == 'B' %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}">
+					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.slug publication.id %}">
 					  	<em>{{ publication.title }}</em></a></div>
 					  <!-- For other Publication types, don't do anything special -->
 					 {% else %}
-					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.id %}"> {{ publication.title }}<</div>
+					  <div class="publication-title"><a href="{% url 'publication-detail-page' publication.slug publication.id %}"> {{ publication.title }}</a></div>
 					 {% endif %}
 				</div>
 			</div>
@@ -714,7 +714,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<!-- The left box when open, where all the details of the publciation appear -->
 			<div class="left-box-open">
 				<p class="open-header center-left-author"> 
-				Details for {{ publication.publication_authors.first.author.last_name }}
+				Details for <a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a>
 					{% if publication.publication_authors.all.count == 2 %}
 						and {{ publication.publication_authors.last.author.last_name }}
 					{% elif publication.publication_authors.all.count > 2 %} et al.
@@ -722,7 +722,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 						({{ publication.year }})</p>
 					<div class="center-left-info">
 						<span class="left-categories">TITLE</span> 
-						<span class="left-entries">{{ publication.title }}</span>
+						<span class="left-entries"><a href="{% url 'publication-detail-page' publication.slug publication.id %}">{{ publication.title }}</a></span>
 						<br>
 						<!-- Authors -->
 						<span class="left-categories">AUTHORS</span> 
@@ -939,7 +939,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 					</p>
 					<div id="bottomLeftInfo{{ cited.id }}" class="bottom-left-info">
 						<span class="left-categories">TITLE</span> 
-						<span class="left-entries">{{ cited.cited_pub.title }}</span>
+						<span class="left-entries"><a href="{% url 'publication-detail-page' cited.cited_pub.slug cited.cited_pub.id %}">{{ cited.cited_pub.title }}</a></span>
 						<br>
 						<span class="left-categories">AUTHORS</span> 
 

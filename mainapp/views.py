@@ -35,9 +35,10 @@ class AuthorListView(ListView):
 
 class AuthorDetailView(DetailView):
     model = Author
-    # You need the two variables below if you want to use the name inside the url. You may need to use regex to get the result you want.
-    slug_field = "last_name"
-    slug_url_kwarg = "last_name"
+    # Don't forget "query_pk_and_slug" if you intend to use both in the url
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    query_pk_and_slug = True
 
 
 # Class-based views
@@ -49,9 +50,10 @@ class PublicationListView(ListView):
 
 class PublicationDetailView(DetailView):
     model = Publication
-    # You need the two variables below if you want to use the name inside the url. You may need to use regex to get the result you want.
-    # slug_field = "title"
-    # slug_url_kwarg = "title"
+    # Don't forget "query_pk_and_slug" if you intend to use both in the url
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+    query_pk_and_slug = True
 
 class HomeListView(ListView):
     # This tells our ListView what model to querry in order to create the list.

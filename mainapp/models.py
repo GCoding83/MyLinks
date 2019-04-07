@@ -1,5 +1,4 @@
-# "Models" are database classes associated with our ORM.
-
+from django.utils.text import slugify
 from django.db import models
 from django.contrib import admin #For using the intermediary tables on the Admin page
 from django.contrib.auth.models import User
@@ -26,12 +25,18 @@ class Publication(models.Model):
 		(WEB_PUBLICATION, 'Web Publication (Blog, etc.)'),)
 	pub_type = models.CharField(max_length=1, choices=PUB_TYPE)
 	author = models.ManyToManyField('Author', through='PublicationAuthor', related_name='publications')
+	slug = models.SlugField(unique=True, default='')
 	title = models.CharField(max_length=200)
+	# For slugs
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		return super(Publication, self).save(*args, **kwargs)
+
 	year = models.IntegerField()
 	abstract = models.TextField()
 	journal = models.ForeignKey('Journal', on_delete=models.CASCADE, default='', null=True, blank=True)
 	citation = models.ManyToManyField('self', through='CitationMetadata', through_fields=('citer_pub', 'cited_pub'), symmetrical=False, related_name='citations')
-
+	# 
 	def __str__(self):
 		return str(self.title + ' (' + str(self.year) + ')' + ' - ' + self.pub_type + str(self.id))
 
@@ -39,6 +44,11 @@ class Author(models.Model):
 	first_name = models.CharField(max_length=30, blank=True, null=True, help_text='If author only has one name (e.g. Aristotle), enter it as a last name')
 	middle_name = models.CharField(max_length=60, blank=True, null=True)
 	last_name = models.CharField(max_length=30)
+	slug = models.SlugField(unique=True, default='')
+	# For slugs
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.last_name)
+		return super(Author, self).save(*args, **kwargs)
 
 	def __str__(self):
 		if self.middle_name == None:
