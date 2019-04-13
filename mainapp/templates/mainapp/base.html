@@ -44,7 +44,8 @@
 	        <div class="navbar-nav">
 	        	<!--Display Login and Register if user isn't already logged in. If they are logged in, then show log out page.-->
 	        	{% if user.is_authenticated %}
-	        		<a class="nav-item nav-link" href="{% url 'my_projects' %}">MyProjects</a>
+	        		<a class="nav-item nav-link" href="{% url 'publications-new-page' %}">New Publication</a>
+	        		<a class="nav-item nav-link" href="{% url 'authors-new-page' %}">New Author</a>
 	        		<a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
 	        		<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
 

@@ -1,0 +1,19 @@
+{% extends "mainapp/base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="content-section">
+		<!--Within our form, we need to add a "CSRF token" (Cross-Site Request Forgery". This is a hidden tage, and it is something that you need to protect your forms. -->
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Delete Author</legend>
+				<h2>Are you sure you want to delete author {{ object }}?</h2>
+			</fieldset>
+			<div class="form-group">
+				<button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+				<a class="btn btn-outline-secondary" href="{% url 'author-detail-page' object.slug object.id %}">Cancel</a>
+			</div>	
+		</form>
+	</div>
+{% endblock content  %}

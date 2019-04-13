@@ -473,8 +473,8 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="top-box-open">
 				<p class="open-header top-center-author">
 					<!-- Cite first author's last name -->
-					<a href="#">{{ publication.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
-					{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
+					<a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
+					{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 					<!-- Or, if there are more than two authors, add "et al." -->
 					{% elif publication.publication_authors.all.count > 2 %} et al.
 					{% endif %}
@@ -524,10 +524,10 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 				{% for citer in publication.cited_pubs.all %}
 					<p id="topLeftAuthor{{ citer.id }}" class="top-left-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
-						Details for {{ citer.citer_pub.publication_authors.first.author.last_name }}
+						Details for <a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.last_name }}</a>
 						 <!-- Then, if there are 2 authors, cite both -->
 						 {% if citer.citer_pub.publication_authors.all.count == 2 %}
-						 	and {{ citer.citer_pub.publication_authors.last.author.last_name }}
+						 	and <a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">{{ citer.citer_pub.publication_authors.last.author.last_name }}</a>
 						 <!-- Or, if there are more than two authors, add "et al." -->
 						 {% elif citer.citer_pub.publication_authors.all.count > 2 %}
 						 	et al.
@@ -550,14 +550,14 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 							<!-- Show full name of first author -->
 							{% if citer.citer_pub.publication_authors.first.author.first_name and citer.citer_pub.publication_authors.first.author.middle_name %}
 								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</span>
+								<a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a></span>
 							{% elif citer.citer_pub.publication_authors.first.author.first_name %}
 								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</span> 
+								<a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% elif citer.citer_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% endif %}
 
 						<!-- Else if there are two authors -->
@@ -565,28 +565,28 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 							<!-- Show full name of first author followed by "and"-->
 							{% if citer.citer_pub.publication_authors.first.author.first_name and citer.citer_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">
+								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a> and</span>
 							{% elif citer.citer_pub.publication_authors.first.author.first_name %}
-								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">
+								{{ citer.citer_pub.publication_authors.first.author.first_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a> and</span> 
 							{% elif citer.citer_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.middle_name }} {{ citer.citer_pub.publication_authors.first.author.last_name }}</a> and</span>
 							{% else %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.last_name }}</a> and</span> 
 							{% endif %}
 
 							<!-- Show second author -->
 							{% if citer.citer_pub.publication_authors.last.author.first_name and citer.citer_pub.publication_authors.last.author.middle_name %}
-								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.last.author.first_name }} {{ citer.citer_pub.publication_authors.last.author.middle_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">
+								{{ citer.citer_pub.publication_authors.last.author.first_name }} {{ citer.citer_pub.publication_authors.last.author.middle_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</a></span>
 							{% elif citer.citer_pub.publication_authors.last.author.first_name %}
 								<span class="left-entries">
-								{{ citer.citer_pub.publication_authors.last.author.first_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</span> 
+								<a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">{{ citer.citer_pub.publication_authors.last.author.first_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</a></span> 
 							{% elif citer.citer_pub.publication_authors.last.author.middle_name %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.last.author.middle_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">{{ citer.citer_pub.publication_authors.last.author.middle_name }} {{ citer.citer_pub.publication_authors.last.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ citer.citer_pub.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">{{ citer.citer_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% endif %}
 
 						<!-- Else if there are more than two authors -->
@@ -599,32 +599,32 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 									<!-- Show full name of first author -->
 									{% if pubauth.author.first_name and pubauth.author.middle_name %}
 										<span class="left-entries">
-											and {{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
+											and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a></span>
 									{% elif pubauth.author.first_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a></span> 
 									{% elif pubauth.author.middle_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a></span>
 									{% else %}
 										<span class="left-entries">
-										and {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.last_name }}</a></span> 
 									{% endif %}
 
 								<!-- Otherwise, use a comma -->
 								{% else %}
 									{% if pubauth.author.first_name and pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% elif pubauth.author.first_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a>,</span> 
 									{% elif pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% else %}
-										<span class="left-entries">
-										{{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.last_name }}</a>,</span> 
 									{% endif %}
 								{% endif %}
 							{% endfor %}
@@ -658,10 +658,10 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 				{% for citer in publication.cited_pubs.all %}
 					<p id="topRightAuthor{{ citer.id }}" class="top-right-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
-						Abstract for {{ citer.citer_pub.publication_authors.first.author.last_name }}
+						Abstract for <a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.first.author.slug citer.citer_pub.publication_authors.first.author.id %}">{{ citer.citer_pub.publication_authors.first.author.last_name }}</a>
 						 <!-- Then, if there are 2 authors, cite both -->
 						 {% if citer.citer_pub.publication_authors.all.count == 2 %}
-						 	and {{ citer.citer_pub.publication_authors.last.author.last_name }}
+						 	and <a href="{% url 'author-detail-page' citer.citer_pub.publication_authors.last.author.slug citer.citer_pub.publication_authors.last.author.id %}">{{ citer.citer_pub.publication_authors.last.author.last_name }}</a>
 						 <!-- Or, if there are more than two authors, add "et al." -->
 						 {% elif citer.citer_pub.publication_authors.all.count > 2 %}
 						 	et al.
@@ -687,7 +687,7 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 					 		<!-- Cite first author's last name -->
 							{{ publication.publication_authors.first.author.last_name }}</a>					
 							<!-- Then, if there are 2 authors, cite both -->
-							{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
+							{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 							<!-- Or, if there are more than two authors, add "et al." -->
 							{% elif publication.publication_authors.all.count > 2 %} et al.
 							{% endif %}
@@ -713,10 +713,10 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			
 			<!-- The left box when open, where all the details of the publciation appear -->
 			<div class="left-box-open">
-				<p class="open-header center-left-author"> 
-				Details for <a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a>
+				<p class="open-header center-left-author">
+				Details for <a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}"> {{ publication.publication_authors.first.author.last_name }}</a>
 					{% if publication.publication_authors.all.count == 2 %}
-						and {{ publication.publication_authors.last.author.last_name }}
+						and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 					{% elif publication.publication_authors.all.count > 2 %} et al.
 					{% endif %}
 						({{ publication.year }})</p>
@@ -732,15 +732,15 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 							<!-- Show full name of first author -->
 							{% if publication.publication_authors.first.author.first_name and publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">
+								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</a></span>
 							{% elif publication.publication_authors.first.author.first_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">
+								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }}</a></span> 
 							{% elif publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a></span> 
 							{% endif %}
 
 						<!-- Else if there are two authors -->
@@ -748,28 +748,28 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 							<!-- Show full publication of first author followed by "and"-->
 							{% if publication.publication_authors.first.author.first_name and publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">
+								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</a> and</span>
 							{% elif publication.publication_authors.first.author.first_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">
+								{{ publication.publication_authors.first.author.first_name }} {{ publication.publication_authors.first.author.last_name }}</a> and</span> 
 							{% elif publication.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.middle_name }} {{ publication.publication_authors.first.author.last_name }}</a> and</span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a> and</span> 
 							{% endif %}
 
 							<!-- Show second author -->
 							{% if publication.publication_authors.last.author.first_name and publication.publication_authors.last.author.middle_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">
+								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</a></span>
 							{% elif publication.publication_authors.last.author.first_name %}
-								<span class="left-entries">
-								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">
+								{{ publication.publication_authors.last.author.first_name }} {{ publication.publication_authors.last.author.last_name }}</a></span> 
 							{% elif publication.publication_authors.last.author.middle_name %}
-								<span class="left-entries">{{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.middle_name }} {{ publication.publication_authors.last.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ publication.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</span> 
 							{% endif %}
 
 						<!-- Else if there are more than two authors -->
@@ -782,32 +782,32 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 									<!-- Show full name of first author -->
 									{% if pubauth.author.first_name and author.middle_name %}
 										<span class="left-entries">
-											and {{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
+											and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a></span>
 									{% elif pubauth.author.first_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a></span> 
 									{% elif pubauth.author.middle_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a></span>
 									{% else %}
 										<span class="left-entries">
-										and {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.last_name }}</a></span> 
 									{% endif %}
 
 								<!-- Otherwise, use a comma -->
 								{% else %}
 									{% if pubauth.author.first_name and pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% elif pubauth.author.first_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a>,</span> 
 									{% elif pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% else %}
-										<span class="left-entries">
-										{{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.last_name }}</a>,</span> 
 									{% endif %}
 								{% endif %}
 							{% endfor %}
@@ -850,9 +850,9 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<article class="right-box-open">
 				<!-- Creating a flexbox container, which will display all the citations from this publication -->
 				<header class="open-header center-right-author">Abstract for
-				{{ publication.publication_authors.first.author.last_name }}
+				<a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a>
 					{% if publication.publication_authors.all.count == 2 %}
-						and {{ publication.publication_authors.last.author.last_name }}
+						and <a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 					{% elif publication.publication_authors.all.count > 2 %} et al.
 					{% endif %}
 						({{ publication.year }})</header>
@@ -876,8 +876,8 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 			<div class="bottom-box-open">
 				<p class="open-header bottom-center-author">
 					<!-- Cite first author's last name -->
-					<a href="#">{{ publication.publication_authors.first.author.last_name }}</a>	<!-- Then, if there are 2 authors, cite both -->
-					{% if publication.publication_authors.all.count == 2 %}and <a href='#'>{{ publication.publication_authors.last.author.last_name }}</a>
+					<a href="{% url 'author-detail-page' publication.publication_authors.first.author.slug publication.publication_authors.first.author.id %}">{{ publication.publication_authors.first.author.last_name }}</a>	<!-- Then, if there are 2 authors, cite both -->
+					{% if publication.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' publication.publication_authors.last.author.slug publication.publication_authors.last.author.id %}">{{ publication.publication_authors.last.author.last_name }}</a>
 					<!-- Or, if there are more than two authors, add "et al." -->
 					{% elif publication.publication_authors.all.count > 2 %} et al.
 					{% endif %}
@@ -926,10 +926,10 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 				{% for cited in publication.citer_pubs.all %}
 					<p id="bottomLeftAuthor{{ cited.id }}" class="bottom-left-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
-						Details for {{ cited.cited_pub.publication_authors.first.author.last_name }}
+						Details for <a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.last_name }}</a>
 						 <!-- Then, if there are 2 authors, cite both -->
 						 {% if cited.cited_pub.publication_authors.all.count == 2 %}
-						 	and {{ cited.cited_pub.publication_authors.last.author.last_name }}
+						 	and <a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.last.author.id %}">{{ cited.cited_pub.publication_authors.last.author.last_name }}
 						 <!-- Or, if there are more than two authors, add "et al." -->
 						 {% elif cited.cited_pub.publication_authors.all.count > 2 %}
 						 	et al.
@@ -948,15 +948,15 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 							<!-- Show full name of first author -->
 							{% if cited.cited_pub.publication_authors.first.author.first_name and cited.cited_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">
+								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a></span>
 							{% elif cited.cited_pub.publication_authors.first.author.first_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">
+								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% elif cited.cited_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% endif %}
 
 						<!-- Else if there are two authors -->
@@ -964,28 +964,28 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 
 							<!-- Show full name of first author followed by "and"-->
 							{% if cited.cited_pub.publication_authors.first.author.first_name and cited.cited_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">
+								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a> and</span>
 							{% elif cited.cited_pub.publication_authors.first.author.first_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">
+								{{ cited.cited_pub.publication_authors.first.author.first_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a> and</span> 
 							{% elif cited.cited_pub.publication_authors.first.author.middle_name %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }} and</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.middle_name }} {{ cited.cited_pub.publication_authors.first.author.last_name }}</a> and</span>
 							{% else %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.first.author.last_name }} and</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.last_name }}</a> and</span> 
 							{% endif %}
 
 							<!-- Show second author -->
 							{% if cited.cited_pub.publication_authors.last.author.first_name and cited.cited_pub.publication_authors.last.author.middle_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.last.author.first_name }} {{ cited.cited_pub.publication_authors.last.author.middle_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.last.author.id %}">
+								{{ cited.cited_pub.publication_authors.last.author.first_name }} {{ cited.cited_pub.publication_authors.last.author.middle_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</a></span>
 							{% elif cited.cited_pub.publication_authors.last.author.first_name %}
-								<span class="left-entries">
-								{{ cited.cited_pub.publication_authors.last.author.first_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.last.author.id %}">
+								{{ cited.cited_pub.publication_authors.last.author.first_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</a></span> 
 							{% elif cited.cited_pub.publication_authors.last.author.middle_name %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.last.author.middle_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</span>
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.last.author.id %}">{{ cited.cited_pub.publication_authors.last.author.middle_name }} {{ cited.cited_pub.publication_authors.last.author.last_name }}</a></span>
 							{% else %}
-								<span class="left-entries">{{ cited.cited_pub.publication_authors.first.author.last_name }}</span> 
+								<span class="left-entries"><a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.last.author.id %}">{{ cited.cited_pub.publication_authors.first.author.last_name }}</a></span> 
 							{% endif %}
 
 						<!-- Else if there are more than two authors -->
@@ -1001,29 +1001,29 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 											and {{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
 									{% elif pubauth.author.first_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a></span> 
 									{% elif pubauth.author.middle_name %}
 										<span class="left-entries">
-										and {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</span>
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a></span>
 									{% else %}
 										<span class="left-entries">
-										and {{ pubauth.author.last_name }}</span> 
+										and <a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">{{ pubauth.author.last_name }}</a></span> 
 									{% endif %}
 
 								<!-- Otherwise, use a comma -->
 								{% else %}
 									{% if pubauth.author.first_name and pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% elif pubauth.author.first_name %}
-										<span class="left-entries">
-										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.first_name }} {{ pubauth.author.last_name }}</a>,</span> 
 									{% elif pubauth.author.middle_name %}
-										<span class="left-entries">
-										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }},</span>
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.middle_name }} {{ pubauth.author.last_name }}</a>,</span>
 									{% else %}
-										<span class="left-entries">
-										{{ pubauth.author.last_name }},</span> 
+										<span class="left-entries"><a href="{% url 'author-detail-page' pubauth.author.slug pubauth.author.id %}">
+										{{ pubauth.author.last_name }}</a>,</span> 
 									{% endif %}
 								{% endif %}
 							{% endfor %}
@@ -1058,10 +1058,10 @@ THIS IS HOW YOU QUERY ALL THE AUTHORS OF A GIVEN CITED PUBLICATION:<br>
 				{% for cited in publication.citer_pubs.all %}
 					<p id="bottomRightAuthor{{ cited.id }}" class="bottom-right-author open-header">
 						<!-- Publication author and year - same procedure as in the main box regarding author count-->
-						Abstract for {{ cited.cited_pub.publication_authors.first.author.last_name }}
+						Abstract for <a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.first.author.last_name }}</a>
 						 <!-- Then, if there are 2 authors, cite both -->
 						 {% if cited.cited_pub.publication_authors.all.count == 2 %}
-						 	and {{ cited.cited_pub.publication_authors.last.author.last_name }}
+						 	and <a href="{% url 'author-detail-page' cited.cited_pub.publication_authors.first.author.slug cited.cited_pub.publication_authors.first.author.id %}">{{ cited.cited_pub.publication_authors.last.author.last_name }}</a>
 						 <!-- Or, if there are more than two authors, add "et al." -->
 						 {% elif cited.cited_pub.publication_authors.all.count > 2 %}
 						 	et al.

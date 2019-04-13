@@ -2,6 +2,7 @@ from django.utils.text import slugify
 from django.db import models
 from django.contrib import admin #For using the intermediary tables on the Admin page
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 #My two main classes, Publication and Author, have a many-to-many relationship. Publication types (articles, books, dissertations, etc.) inherit from Publication
@@ -33,23 +34,42 @@ class Publication(models.Model):
 		return super(Publication, self).save(*args, **kwargs)
 
 	year = models.IntegerField()
-	abstract = models.TextField()
+	abstract = models.TextField(blank=True, null=True)
 	journal = models.ForeignKey('Journal', on_delete=models.CASCADE, default='', null=True, blank=True)
 	citation = models.ManyToManyField('self', through='CitationMetadata', through_fields=('citer_pub', 'cited_pub'), symmetrical=False, related_name='citations')
 	# 
 	def __str__(self):
 		return str(self.title + ' (' + str(self.year) + ')' + ' - ' + self.pub_type + str(self.id))
 
+	# To tell Django how to find the URL to any specific instance of a publication that we create
+	def get_absolute_url(self):
+		return reverse('publication-authors-new-page')
+
+
 class Author(models.Model):
-	first_name = models.CharField(max_length=30, blank=True, null=True, help_text='If author only has one name (e.g. Aristotle), enter it as a last name')
-	middle_name = models.CharField(max_length=60, blank=True, null=True)
-	last_name = models.CharField(max_length=30)
 	slug = models.SlugField(unique=True, default='')
+	first_name = models.CharField(max_length=30, blank=True, null=True, help_text='Optional. If author only has one name (e.g. Aristotle), enter it as a last name')
+	middle_name = models.CharField(max_length=60, blank=True, null=True, help_text='Optional.')
+	last_name = models.CharField(max_length=30, help_text='Required.')
 	# For slugs
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.last_name)
 		return super(Author, self).save(*args, **kwargs)
 
+	# def get_absolute_url(self):
+
+	# 	if self.middle_name == None:
+	# 		if self.first_name == None:
+	# 			kwargs = {'slug': self.slug}
+	# 			return reverse('author-detail-last', kwargs=kwargs)
+	# 		kwargs = {'slug': self.slug, 'first_name': self.first_name}
+	# 		return reverse('author-detail-first-last', kwargs=kwargs)
+	# 	elif self.first_name == None and self.middle_name:
+	# 		kwargs = {'slug': self.slug, 'middle_name': self.middle_name}
+	# 		return reverse('author-detail-middle-last', kwargs=kwargs)	
+	# 	kwargs = {'slug': self.slug, 'first_name': self.first_name, 'middle_name': self.middle_name}
+	# 	return reverse('author-detail-first-middle-last', kwargs=kwargs)
+	
 	def __str__(self):
 		if self.middle_name == None:
 			if self.first_name == None:
@@ -59,12 +79,16 @@ class Author(models.Model):
 			return str(self.middle_name) + ' ' + str(self.last_name)
 		return str(self.first_name) + ' ' + str(self.middle_name) + ' ' + str(self.last_name)
 
+	# To tell Django how to find the URL to any specific instance of an author that we create
+	def get_absolute_url(self):
+		return reverse('author-detail-page', kwargs={'slug': self.slug, 'pk': self.pk})
+
 
 #Intermediary table 
 class PublicationAuthor(models.Model):
 	author = models.ForeignKey('Author', related_name='publication_authors', on_delete=models.CASCADE)
 	publication = models.ForeignKey('Publication', related_name='publication_authors', on_delete=models.CASCADE)
-	author_rank = models.IntegerField(default=None)
+	author_rank = models.IntegerField(default=1)
 
 	class Meta:
 		ordering = ('publication', 'author_rank')
@@ -72,6 +96,9 @@ class PublicationAuthor(models.Model):
 
 	def __str__(self):
 		return str(self.author) + ' in ' + str(self.publication.title)
+
+	def get_absolute_url(self):
+		return reverse('publications-page')
 
 class PublicationAuthorInline(admin.TabularInline):
 	model = PublicationAuthor
