@@ -1,0 +1,20 @@
+{% extends "mainapp/base.html" %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+	<div class="content-section">
+		<!--Within our form, we need to add a "CSRF token" (Cross-Site Request Forgery". This is a hidden tage, and it is something that you need to protect your forms. -->
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">General Information</legend>
+				<!--Below is where we use the built-in forms from Django, but it does not include a Submit button -->
+				{{ form|crispy }} <!--Adding this crispy bit nicely formats everything for us-->
+			</fieldset>
+			<div class="form-group">
+				<a class="btn btn-outline-secondary" href="{% url 'publications-page' %}">Cancel</a>
+				<button class="btn btn-outline-info" type="submit">Next</button>
+			</div>	
+		</form>
+	</div>
+{% endblock content  %}

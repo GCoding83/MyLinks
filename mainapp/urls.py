@@ -5,6 +5,7 @@ from .views import (
 	AuthorDetailView, 
 	AuthorListView, 
 	AuthorUpdateView,
+	BookCreateView,
 	HomeListView, 
 	PublicationAuthorCreateView,
 	PublicationCreateView,
@@ -18,6 +19,8 @@ urlpatterns = [
 	#Below is how you assign routes for function-based views 
 	path('', HomeListView.as_view(), name='mainapp-home'), 
 	path('about/', views.about, name='about-page'),
+	path('publications/new/', views.publication, name='publication_first_step_page'),
+
 
 	# Below, for class-based views
 	# Use variables to specify a distinct route per author
@@ -33,7 +36,9 @@ urlpatterns = [
 	# path('authors/<first_name>_<middle_name>_<slug:slug>/', views.AuthorDetailView.as_view(), name='author-detail-first-middle-last'),
 	path('publications/', PublicationListView.as_view(), name='publications-page'),
 	path('publications/<slug:slug>/<int:pk>/', PublicationDetailView.as_view(), name='publication-detail-page'),
-	path('publications/new/', PublicationCreateView.as_view(), name='publications-new-page'),
+	path('publications/new/step2/', PublicationCreateView.as_view(), name='publications-new-page'),
+	
+	path('publications/new/book/', BookCreateView.as_view(), name='book-new-page'),	
 	path('publications/new/authors/', PublicationAuthorCreateView.as_view(), name='publication-authors-new-page'),
 	path('books/', BookListView.as_view(), name='books-page'),
 ] 

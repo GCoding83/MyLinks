@@ -4,24 +4,23 @@ from django.contrib import admin #For using the intermediary tables on the Admin
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-
 #My two main classes, Publication and Author, have a many-to-many relationship. Publication types (articles, books, dissertations, etc.) inherit from Publication
 class Publication(models.Model):
-	JOURNAL_ARTICLE = 'A'
+	ARTICLE = 'A'
 	BOOK = 'B'
 	BOOK_CHAPTER = 'C'
 	DISSERTATION = 'D'
-	OTHER_PUBLICATION_TYPE = 'O'
-	PRESENTATION = 'P'
 	STUDENT_WORK = 'S'
+	PRESENTATION = 'P'
 	WEB_PUBLICATION = 'W'
+	OTHER_PUBLICATION_TYPE = 'O'
 	PUB_TYPE = (
-		(JOURNAL_ARTICLE, 'Journal Article'),
+		(ARTICLE, 'Journal Article'),
 		(BOOK, 'Book'),
 		(BOOK_CHAPTER, 'Book Chapter'),
 		(DISSERTATION, 'Dissertation'),
 		(OTHER_PUBLICATION_TYPE, 'Other Publication Type'),
-		(PRESENTATION, 'Presensation'),
+		(PRESENTATION, 'Presensation (Conference Talk, Course Lecture, etc.'),
 		(STUDENT_WORK, 'Student Work (Other than Dissertation'),
 		(WEB_PUBLICATION, 'Web Publication (Blog, etc.)'),)
 	pub_type = models.CharField(max_length=1, choices=PUB_TYPE)
@@ -34,7 +33,7 @@ class Publication(models.Model):
 		return super(Publication, self).save(*args, **kwargs)
 
 	year = models.IntegerField()
-	abstract = models.TextField(blank=True, null=True)
+	abstract = models.TextField(blank=True, null=True, help_text='You can enter the abstract later if you prefer.')
 	journal = models.ForeignKey('Journal', on_delete=models.CASCADE, default='', null=True, blank=True)
 	citation = models.ManyToManyField('self', through='CitationMetadata', through_fields=('citer_pub', 'cited_pub'), symmetrical=False, related_name='citations')
 	# 
@@ -187,12 +186,16 @@ class DissertationAdmin(admin.ModelAdmin):
 		]
 
 class Book(Publication):
-	publisher = models.CharField(max_length=200, null=True, blank=True)
-	book_page_total = models.IntegerField(null=True, blank=True)
-	book_chapter_total = models.IntegerField(null=True, blank=True)
+	publisher = models.CharField(max_length=200, null=True, blank=True, help_text='Optional.')
+	book_page_total = models.IntegerField(null=True, blank=True, help_text='Optional.')
+	book_chapter_total = models.IntegerField(null=True, blank=True, help_text='Optional.')
 
 	def __str__(self):
 		return self.title + ' (' + str(self.year) + ')' 
+
+	# To tell Django how to find the URL to any specific instance of a publication that we create
+	def get_absolute_url(self):
+		return reverse('publication-authors-new-page')
 
 class BookAdmin(admin.ModelAdmin):
 	inlines = [

@@ -1,5 +1,6 @@
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import (
     CreateView,
     DeleteView, 
@@ -66,6 +67,63 @@ class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     model = Author
     fields = ['first_name', 'middle_name', 'last_name']
     #This function works with UserPassesTestMixin to ensure that only people with the right permissions can update
+
+class BookCreateView(LoginRequiredMixin, CreateView):
+    model = Book
+    fields = ['title', 'year', 'publisher', 'book_page_total','book_chapter_total', 'abstract']
+
+class PublicationFirstStep(forms.Form):
+    BOOK = 'B'
+    ARTICLE = 'A'
+    JOURNAL = 'J'
+    VOLUME_CHAPTER = 'C'
+    DISSERTATION = 'D'
+    STUDENT_WORK = 'S'
+    PRESENTATION = 'P'
+    WEB_PUBLICATION = 'W'
+    OTHER_PUBLICATION_TYPE = 'O'
+    PUBLIC = 'Pu'
+    PRIVATE = 'Pr'
+    PUB_TYPE = (
+        (BOOK, 'Book'),
+        (ARTICLE, 'Article'),
+        (JOURNAL, 'Journal'),
+        (VOLUME_CHAPTER, 'Volume Chapter'),
+        (DISSERTATION, 'Dissertation'),
+        (STUDENT_WORK, 'Student Work (Other than Dissertation)'),
+        (PRESENTATION, 'Presentation (Conference Talk, Course Lecture, etc.)'),
+        (WEB_PUBLICATION, 'Web Publication (Blog, Online Encyclopedia, etc.)'),
+        (OTHER_PUBLICATION_TYPE, 'Other Publication Type'),
+        )
+    PRIVACY = (
+        (PUBLIC, 'Public (anyone can access it)'),
+        (PRIVATE, 'Private (only I can access it)'),
+        )
+
+    publication_type = forms.ChoiceField(choices=PUB_TYPE, label="Please specify the publication type")
+    privacy = forms.ChoiceField(choices=PRIVACY, label="Please specify whether this publication should be public or private")
+
+def publication(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = PublicationFirstStep(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            if form.cleaned_data['publication_type'] == 'B':
+                return redirect('book-new-page')
+            else:
+                return redirect('publications-new-page')
+
+                         
+    #If the request is not a POST, it will just render an empty form
+    else:
+        form = PublicationFirstStep()
+    # if a GET  we'll create a blank form
+    return render(request, 'mainapp/publication_first_step.html', {'form': form})
 
 class PublicationCreateView(LoginRequiredMixin, CreateView):
     model = Publication
