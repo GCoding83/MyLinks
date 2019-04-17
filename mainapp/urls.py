@@ -1,12 +1,14 @@
 from django.urls import path, reverse
 from .views import (
+	ArticleCreateView,
 	AuthorCreateView,
 	AuthorDeleteView,
 	AuthorDetailView, 
 	AuthorListView, 
 	AuthorUpdateView,
 	BookCreateView,
-	HomeListView, 
+	HomeListView,
+	JournalCreateView, 
 	PublicationAuthorCreateView,
 	PublicationCreateView,
 	PublicationDetailView, 
@@ -39,6 +41,10 @@ urlpatterns = [
 	path('publications/new/step2/', PublicationCreateView.as_view(), name='publications-new-page'),
 	
 	path('publications/new/book/', BookCreateView.as_view(), name='book-new-page'),	
-	path('publications/new/authors/', PublicationAuthorCreateView.as_view(), name='publication-authors-new-page'),
+	
+	path('publications/new/article/', ArticleCreateView.as_view(), name='article-new-page'),	
+	path('publications/new/journal/', JournalCreateView.as_view(), name='journal-new-page'),	
+
+	path('publications/new/<int:pk>/authors/', PublicationAuthorCreateView.as_view(), name='publication-authors-new-page'),
 	path('books/', BookListView.as_view(), name='books-page'),
 ] 

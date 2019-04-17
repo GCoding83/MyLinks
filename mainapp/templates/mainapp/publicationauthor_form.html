@@ -9,11 +9,20 @@
 			<fieldset class="form-group">
 				<legend class="border-bottom mb-4">Publication Authors</legend>
 				<!--Below is where we use the built-in forms from Django, but it does not include a Submit button -->
-				{{ form|crispy }} <!--Adding this crispy bit nicely formats everything for us-->
+				{{ form|crispy }} <!--Adding this crispy bit nicely formats everything for us
+			-->
+			
 			</fieldset>
 			<div class="form-group">
-				<button class="btn btn-outline-info" type="submit">Apply</button>
+				<button class="btn btn-outline-success" type="submit">Apply</button>
 			</div>	
+				PK is: {{ test.pk }}
 		</form>
 	</div>
+	<script type="text/javascript">
+		$(function(){
+			/*Disable all options except the pre-populated one (i.e. the publication  that the user created previously*/
+			$('#id_publication').children().not('[selected]').prop('disabled', true);
+		});
+	</script>
 {% endblock content  %}

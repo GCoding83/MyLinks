@@ -29,7 +29,7 @@ from django.urls import path, include
 #We're importing it under a different name just to avoid possible confusion
 from users import views as user_views
 
-
+import debug_toolbar
 
 urlpatterns = [
     #This maps the URL blog (as aur main page) to the function included in the file "urls" inside our "blog" directory

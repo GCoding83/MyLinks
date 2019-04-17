@@ -34,15 +34,11 @@ class Publication(models.Model):
 
 	year = models.IntegerField()
 	abstract = models.TextField(blank=True, null=True, help_text='You can enter the abstract later if you prefer.')
-	journal = models.ForeignKey('Journal', on_delete=models.CASCADE, default='', null=True, blank=True)
+	journal = models.ForeignKey('Journal', on_delete=models.CASCADE, default='', null=True, blank=True, help_text="IMPORTANT: If your journal isn't listed here, go to the bottom of the form and click 'Add Journal'. After you create the new Journal entry, you will be returned to this form.")
 	citation = models.ManyToManyField('self', through='CitationMetadata', through_fields=('citer_pub', 'cited_pub'), symmetrical=False, related_name='citations')
 	# 
 	def __str__(self):
 		return str(self.title + ' (' + str(self.year) + ')' + ' - ' + self.pub_type + str(self.id))
-
-	# To tell Django how to find the URL to any specific instance of a publication that we create
-	def get_absolute_url(self):
-		return reverse('publication-authors-new-page')
 
 
 class Author(models.Model):
@@ -152,21 +148,27 @@ class Journal(models.Model):
 	volume = models.IntegerField()
 	issue = models.IntegerField()
 	year = models.IntegerField()
-	academic_domain = models.CharField(max_length=100)
-	page_total = models.IntegerField()
+	academic_domain = models.CharField(max_length=100, null=True, blank=True)
+	page_total = models.IntegerField(null=True, blank=True)
 
 	def __str__(self):
 		return self.journal_name + ', ' + str(self.volume) + '(' + str(self.issue) + ')'
-
+	
+	def get_absolute_url(self):
+		return reverse('article-new-page')
+	
 
 
 #Below are all the types of publications that inherit from Publication. Each has an inline for the PublicationAuthor table
 class Article(Publication):
-	article_page_begin = models.IntegerField()
-	article_page_end = models.IntegerField()
+	article_page_begin = models.IntegerField(null=True, blank=True)
+	article_page_end = models.IntegerField(null=True, blank=True)
 	# def __str__(self):
 	# 	return '"' + self.title + '" in ' + self.journal.journal_name + ' (' + str(self.journal.year) + ')'
-
+	# To tell Django how to find the URL to any specific instance of a publication that we create
+	def get_absolute_url(self):
+		return reverse('publication-authors-new-page', kwargs={'pk': self.pk})
+		
 class ArticleAdmin(admin.ModelAdmin):
 	inlines = [
 		PublicationAuthorInline, CitationMetadataInline,
@@ -195,7 +197,7 @@ class Book(Publication):
 
 	# To tell Django how to find the URL to any specific instance of a publication that we create
 	def get_absolute_url(self):
-		return reverse('publication-authors-new-page')
+		return reverse('publication-authors-new-page', kwargs={'pk': self.pk})
 
 class BookAdmin(admin.ModelAdmin):
 	inlines = [

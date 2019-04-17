@@ -68,9 +68,17 @@ class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['first_name', 'middle_name', 'last_name']
     #This function works with UserPassesTestMixin to ensure that only people with the right permissions can update
 
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    fields = ['journal', 'title', 'year', 'article_page_begin','article_page_end', 'abstract']
+
 class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     fields = ['title', 'year', 'publisher', 'book_page_total','book_chapter_total', 'abstract']
+
+class JournalCreateView(LoginRequiredMixin, CreateView):
+    model = Journal;
+    fields = ['journal_name', 'volume', 'issue', 'year', 'page_total']
 
 class PublicationFirstStep(forms.Form):
     BOOK = 'B'
@@ -82,8 +90,6 @@ class PublicationFirstStep(forms.Form):
     PRESENTATION = 'P'
     WEB_PUBLICATION = 'W'
     OTHER_PUBLICATION_TYPE = 'O'
-    PUBLIC = 'Pu'
-    PRIVATE = 'Pr'
     PUB_TYPE = (
         (BOOK, 'Book'),
         (ARTICLE, 'Article'),
@@ -95,14 +101,7 @@ class PublicationFirstStep(forms.Form):
         (WEB_PUBLICATION, 'Web Publication (Blog, Online Encyclopedia, etc.)'),
         (OTHER_PUBLICATION_TYPE, 'Other Publication Type'),
         )
-    PRIVACY = (
-        (PUBLIC, 'Public (anyone can access it)'),
-        (PRIVATE, 'Private (only I can access it)'),
-        )
-
     publication_type = forms.ChoiceField(choices=PUB_TYPE, label="Please specify the publication type")
-    privacy = forms.ChoiceField(choices=PRIVACY, label="Please specify whether this publication should be public or private")
-
 def publication(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -113,8 +112,12 @@ def publication(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            if form.cleaned_data['publication_type'] == 'B':
+            if form.cleaned_data['publication_type'] == 'A':
+                return redirect('article-new-page')
+            elif form.cleaned_data['publication_type'] == 'B':
                 return redirect('book-new-page')
+            elif form.cleaned_data['publication_type'] == 'J':
+                return redirect('journal-new-page')    
             else:
                 return redirect('publications-new-page')
 
@@ -138,19 +141,31 @@ class PublicationCreateView(LoginRequiredMixin, CreateView):
     #         pubauth.save()
     #     return super(ModelFormMixin, self).form_valid(form)
 
+
+# class PublicationAuthorForm(ModelForm):
+#     class Meta:
+#         model = PublicationAuthor
+#         publication =
 class PublicationAuthorCreateView(LoginRequiredMixin, CreateView):
+    # form_class = 
     model = PublicationAuthor
-    fields = ['publication','author']
+    fields = ['publication', 'author', 'author_rank']
 
-    # def form_valid(self, form):
-    #     self.object = form.save(commit=False)
-    #     for author in form.cleaned_data['author']:
-    #         pubauth = PublicationAuthor()
-    #         pubauth.publication = self.object
-    #         pubauth.author = author
-    #         pubauth.save()
-    #     return super(ModelFormMixin, self).form_valid(form)
+    def get_initial(self):
+        publication = Publication.objects.get(pk=self.kwargs['pk'])
+        return {'publication': publication}
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    # #     # publication = Publication.objects.get(pk=kwargs['pk'])
+    #     # context['form'] = PublicationAuthorForm(initial={'publication': publication})
+    #     publication = Publication.objects.get(pk=79)
+    #     mynum = 5
+    #     context['test'] = PublicationAuthorCreateView(initial={'author_rank': mynum})
+    #     # context['test'] = publication
+
+    #     return context
+  
 class PublicationListView(ListView):
     # This tells our ListView what model to querry in order to create the list.
     model = Publication
