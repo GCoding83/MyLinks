@@ -2,6 +2,10 @@
 {% block content %}
 <!-- Real code -->
 
+<!-- If there is an author for this publication -->
+{% if object.publication_authors.first.author.id %}
+
+
 <article class="media content-section">
 	<div class="media-body">
 
@@ -21,6 +25,8 @@
 			<div class="top-box-open">
 				<p class="open-header top-center-author">
 					<!-- Cite first author's last name -->
+
+					<!-- If there is an author -->
 					<a href="{% url 'author-detail-page' object.publication_authors.first.author.slug object.publication_authors.first.author.id %}">{{ object.publication_authors.first.author.last_name }}</a>						<!-- Then, if there are 2 authors, cite both -->
 					{% if object.publication_authors.all.count == 2 %}and <a href="{% url 'author-detail-page' object.publication_authors.last.author.slug object.publication_authors.last.author.id %}">{{ object.publication_authors.last.author.last_name }}</a>
 					<!-- Or, if there are more than two authors, add "et al." -->
@@ -624,4 +630,323 @@
 		</div>
 	</div>
 </article>
+
+
+
+
+
+
+<!-- If there is NOT an author for this publication -->
+{% else %}
+
+
+
+
+
+<article class="media content-section">
+	<div class="media-body">
+
+		<!-- The main grid container starts here -->
+		<div class="grid-container">
+
+			<!-- The top part where the user clicks to get all the citations -->
+			<div class="top-box"> 
+				<div class="logo-top-bottom">{% load static %}
+					<!-- Add media like this:  -->
+					{% load static %}
+					<img src="{% static "../media/site_pics/logos/New-Quotes-Logo-1.png" %}" alt="Logo" height='25' width='50' class="quotes-image">
+				</div>
+			</div>
+
+			<!-- Box top when open -->
+			<div class="top-box-open">
+				<p class="open-header top-center-author">
+					<!-- Cite first author's last name -->
+						No Author({{ object.year }}) is cited by:
+				</p>
+
+
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<p class='flex-container'> 
+					<!-- For each citer_pub that cites the cited_pub (i.e. our publication) -->
+		 			{% for citer in object.cited_pubs.all %}		
+						<span class="top-nested-citations">
+							<!-- Cite first author's last name -->
+							 {{ citer.citer_pub.publication_authors.first.author.last_name }}
+							 <!-- Then, if there are 2 authors, cite both -->
+							 {% if citer.citer_pub.publication_authors.all.count == 2 %}
+							 	and {{ citer.citer_pub.publication_authors.last.author.last_name }}
+							 <!-- Or, if there are more than two authors, add "et al." -->
+							 {% elif citer.citer_pub.publication_authors.all.count > 2 %}
+							 	et al.
+							 {% endif %}
+							 <!-- Year of publication -->
+							 ({{ citer.citer_pub.year }});
+						</span>
+						<span id="{{ citer.id }}" class="citation-details">
+							<button class="citation-button button-active">CITATION</button>
+							<button class="context-button">CONTEXT</button><br><br>
+							<img class="top-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
+							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="top-abstract-image">	
+							<span class="big-text-box">
+								<span class="actual-citation block-active">
+									{{ citer.actual_citation }}
+								</span>
+								<span class="citation-context">
+									{{ citer.citation_context }}
+								</span>
+							</span>
+						</span><br>
+					{% endfor %}
+				</p>	
+			</div>
+
+				
+
+			<!-- This is the box that opens on the top left to display the citation info when user clicks on image -->
+			<div class="top-left-box-open">
+				{% for citer in object.cited_pubs.all %}
+					<p id="topLeftAuthor{{ citer.id }}" class="top-left-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Details for No Author
+						 <!-- Year of publication -->
+						 ({{ citer.citer_pub.year }})
+					</p>
+					<div id="topLeftInfo{{ citer.id }}" class="top-left-info">
+						<!-- Title -->
+						<span class="left-categories">TITLE</span> 
+						<span class="left-entries"><a href="{% url 'publication-detail-page' citer.citer_pub.slug citer.citer_pub.id %}">{{ citer.citer_pub.title }}</a></span>
+						<br>
+
+						<!-- Authors -->
+						<span class="left-categories">NO AUTHORS</span>
+
+						<br>
+						<span class="left-categories">YEAR</span> 
+						<span class="left-entries">{{ citer.citer_pub.year }}</span>
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						<span class="left-categories">TYPE</span> 
+						<span class="left-entries">{{ citer.citer_pub.get_pub_type_display }}
+						{% if citer.citer_pub.pub_type == 'A'%}</span>
+							<br>
+							<span class="left-categories">JOURNAL</span> 
+							<span class="left-entries">{{ citer.citer_pub.journal.journal_name }}</span>
+							<br>
+							<span class="left-categories">VOLUME</span> 
+							<span class="left-entries">{{ citer.citer_pub.journal.volume }}</span>
+							<br>
+							<span class="left-categories">ISSUE</span> 
+							<span class="left-entries">{{ citer.citer_pub.journal.issue }}</span>
+							<br><small>More</small>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- This is the box that opens on the top right to display the citation abstract when user clicks on image -->
+			<div class="top-right-box-open">
+				{% for citer in object.cited_pubs.all %}
+					<p id="topRightAuthor{{ citer.id }}" class="top-right-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Abstract for No Author
+						 <!-- Year of publication -->
+						 ({{ citer.citer_pub.year }})
+					</p>
+					<div id="topRightAbstract{{ citer.id }}" class="top-right-abstract">
+						<span class="abstract-category">
+						ABSTRACT</span>
+						<span class="abstract-entry">
+						{{ citer.citer_pub.abstract }}</span>
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- The cnter box, where the main info of the citation appears -->	
+			<div class="center-box">
+				<div class="author-year-title">
+				 
+
+					 <!-- Publication year -->
+					 <span class="year"> No Author ({{ object.year }})
+					 </span>
+					 <!-- For Articles, put article title inside quotes and follow with journal name in italics -->
+					 {% if  object.pub_type == 'A' %}
+					  <div class="publication-title"> 
+					 "{{ object.title }}" </div> <div class="journalname"><em><a href="#">{{ object.journal }}</a></em></div>
+					 <!-- For Books, put book title in italics -->
+					 {% elif object.pub_type == 'B' %}
+					  <div class="publication-title"><em>{{ object.title }}</em></div>
+					  <!-- For other Publication types, don't do anything special -->
+					 {% else %}
+					  <div class="publication-title"> {{ object.title }}</div>
+					 {% endif %}
+				</div>
+			</div>
+			
+			<!-- The left box when open, where all the details of the publciation appear -->
+			<div class="left-box-open">
+				<p class="open-header center-left-author">
+				Details for No Author
+						({{ object.year }})</p>
+					<div class="center-left-info">
+						<span class="left-categories">TITLE</span> 
+						<span class="left-entries">{{ object.title }}</span>
+						<br>
+						<!-- Authors -->
+						<span class="left-categories">NO AUTHORS</span> 
+						<br>
+						<span class="left-categories">YEAR</span> 
+						<span class="left-entries">{{ object.year }}</span>
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						<span class="left-categories">TYPE</span> 
+						<span class="left-entries">{{ object.get_pub_type_display }}</span>
+
+						{% if object.pub_type == 'A' %}
+							<br>
+							<span class="left-categories">JOURNAL</span> 
+							<span class="left-entries">{{ object.journal.journal_name }}</span>
+							<br>
+							<span class="left-categories">VOLUME</span> 
+							<span class="left-entries">{{ object.journal.volume }}</span>
+							<br>
+							<span class="left-categories">ISSUE</span> 
+							<span class="left-entries">{{ object.journal.issue }}</span>
+							<br><small>More</small>
+						{% endif %}
+					</div>
+			</div>
+
+			<!-- The left part where the user clicks to get all the publication details -->
+			<div class="left-box">
+				{% load static %}
+				<img class="center-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='20' width='20'>
+			</div>
+
+			<!-- The right part where the user clicks to get the Abstract -->
+			<div class="right-box">
+				<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height=20 width='20'>
+			</div>
+
+			<!-- The right box when open, where the Abstract appears -->
+			<article class="right-box-open">
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<header class="open-header center-right-author">Abstract for No Author
+						({{ object.year }})</header>
+				<div class="center-right-abstract">
+					<span class="abstract-category">
+						ABSTRACT</span>
+					<span class="abstract-entry">
+						{{ object.abstract }}</span>
+				</div>
+			</article>
+
+
+			<!-- The bottom part where the user clicks to get the citations -->
+			<div class="bottom-box">
+				<div class="logo-top-bottom">{% load static %}
+					<img src="{% static "../media/site_pics/logos/New-Quotes-Logo-2.png" %}" alt="Logo" height='25' width='50' class="quotes-image">
+				</div>
+			</div>
+
+			<!-- The top part where the user clicks to get all the citations -->
+			<div class="bottom-box-open">
+				<p class="open-header bottom-center-author">
+					No Author
+						({{ object.year }}) cites:
+				</p>
+				<!-- Creating a flexbox container, which will display all the citations from this publication -->
+				<p class='flex-container'>
+					<!-- For each cited_pub cited by the citer_pub (i.e. our publication) -->
+		 			{% for cited in object.citer_pubs.all %}		
+						<span class="bottom-nested-citations">
+						No Author
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }}); 
+						</span>
+						<span id="{{ cited.id }}" class="citation-details">
+							<button class="citation-button button-active">CITATION</button>
+							<button class="context-button">CONTEXT</button><br><br>
+							<img class="bottom-info-image" src="{% static "../media/site_pics/logos/Info logo.png" %}" alt="Details" height='15' width='15'>
+
+							<img src="{% static "../media/site_pics/logos/Abstract logo.png" %}" alt="Abstract" height='15' width='15' class="bottom-abstract-image">
+							<span class="big-text-box">
+								<span class="actual-citation block-active">
+									{{ cited.actual_citation }}
+								</span>
+								<span class="citation-context">
+									{{ cited.citation_context }}
+								</span>
+
+							</span>
+						</span><br>
+					{% endfor %}
+				</p>
+			</div>
+				
+
+			<!-- This is the box that opens on the bottom left to display the citation info when user clicks on image -->
+			<div class="bottom-left-box-open">
+				{% for cited in object.citer_pubs.all %}
+					<p id="bottomLeftAuthor{{ cited.id }}" class="bottom-left-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Details for No Author
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }})
+					</p>
+					<div id="bottomLeftInfo{{ cited.id }}" class="bottom-left-info">
+						<span class="left-categories">TITLE</span> 
+						<span class="left-entries"><a href="{% url 'publication-detail-page' cited.cited_pub.slug cited.cited_pub.id %}">{{ cited.cited_pub.title }}</a></span>
+						<br>
+						<span class="left-categories">NO AUTHORS</span> 
+
+						<br>
+						<span class="left-categories">YEAR</span> 
+						<span class="left-entries">{{ cited.cited_pub.year }}</span>
+						<br>
+						<!-- Below is the code to display the human readable name of the pub_type, rather than the code associated with it. -->
+						<span class="left-categories">TYPE</span> 
+						<span class="left-entries">{{ cited.cited_pub.get_pub_type_display }}</span>
+						{% if cited.cited_pub.pub_type == 'A'%}
+							<br>
+							<span class="left-categories">JOURNAL</span> 
+							<span class="left-entries">{{ cited.cited_pub.journal.journal_name }}</span>
+							<br>
+							<span class="left-categories">VOLUME</span> 
+							<span class="left-entries">{{ cited.cited_pub.journal.volume }}</span>
+							<br>
+							<span class="left-categories">ISSUE</span> 
+							<span class="left-entries">{{ cited.cited_pub.journal.issue }}</span>
+							<br><small>More</small>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- This is the box that opens on the bottom right to display the citation abstract when user clicks on image -->
+			<div class="bottom-right-box-open">
+				{% for cited in object.citer_pubs.all %}
+					<p id="bottomRightAuthor{{ cited.id }}" class="bottom-right-author open-header">
+						<!-- Publication author and year - same procedure as in the main box regarding author count-->
+						Abstract for No Author
+						 <!-- Year of publication -->
+						 ({{ cited.cited_pub.year }})
+					</p>
+					<div id="bottomRightAbstract{{ cited.id }}" class="bottom-right-abstract">
+						<span class="abstract-category">
+						ABSTRACT</span>
+						<span class="abstract-entry">
+						{{ cited.cited_pub.abstract }}</span>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</article>
+
+
+
+{% endif %}
+
 {% endblock content %}

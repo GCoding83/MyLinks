@@ -157,13 +157,9 @@ class PublicationAuthorCreateView(LoginRequiredMixin, CreateView):
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
-    # #     # publication = Publication.objects.get(pk=kwargs['pk'])
+    #     # publication = Publication.objects.get(pk=self.kwargs['pk'])
     #     # context['form'] = PublicationAuthorForm(initial={'publication': publication})
-    #     publication = Publication.objects.get(pk=79)
-    #     mynum = 5
-    #     context['test'] = PublicationAuthorCreateView(initial={'author_rank': mynum})
-    #     # context['test'] = publication
-
+    #     context['form'] = Publication.objects.all()
     #     return context
   
 class PublicationListView(ListView):

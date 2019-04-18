@@ -7,6 +7,7 @@ from .views import (
 	AuthorListView, 
 	AuthorUpdateView,
 	BookCreateView,
+	# BookUpdateView,
 	HomeListView,
 	JournalCreateView, 
 	PublicationAuthorCreateView,
@@ -39,12 +40,10 @@ urlpatterns = [
 	path('publications/', PublicationListView.as_view(), name='publications-page'),
 	path('publications/<slug:slug>/<int:pk>/', PublicationDetailView.as_view(), name='publication-detail-page'),
 	path('publications/new/step2/', PublicationCreateView.as_view(), name='publications-new-page'),
-	
-	path('publications/new/book/', BookCreateView.as_view(), name='book-new-page'),	
-	
+	path('publications/new/book/', BookCreateView.as_view(), name='book-new-page'),		
 	path('publications/new/article/', ArticleCreateView.as_view(), name='article-new-page'),	
 	path('publications/new/journal/', JournalCreateView.as_view(), name='journal-new-page'),	
 
-	path('publications/new/<int:pk>/authors/', PublicationAuthorCreateView.as_view(), name='publication-authors-new-page'),
+	path('publications/new/<int:pk>/<slug:slug>/authors/', PublicationAuthorCreateView.as_view(), name='publication-authors-new-page'),
 	path('books/', BookListView.as_view(), name='books-page'),
 ] 

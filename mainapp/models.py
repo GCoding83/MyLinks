@@ -196,8 +196,8 @@ class Book(Publication):
 		return self.title + ' (' + str(self.year) + ')' 
 
 	# To tell Django how to find the URL to any specific instance of a publication that we create
-	def get_absolute_url(self):
-		return reverse('publication-authors-new-page', kwargs={'pk': self.pk})
+	def get_absolute_url(self): 
+		return reverse('publication-authors-new-page', kwargs={'pk': self.pk, 'slug': self.slug})
 
 class BookAdmin(admin.ModelAdmin):
 	inlines = [

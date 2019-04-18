@@ -7,22 +7,24 @@
 		<form method="POST">
 			{% csrf_token %}
 			<fieldset class="form-group">
-				<legend class="border-bottom mb-4">Publication Authors</legend>
+				<!-- The "view.kwargs.title" bit prints the title listed in the url -->
+				<legend class="border-bottom mb-4">Authors for <em>{{ view.kwargs.slug }} in {{ view.kwargs.pk }}</em></legend>
 				<!--Below is where we use the built-in forms from Django, but it does not include a Submit button -->
 				{{ form|crispy }} <!--Adding this crispy bit nicely formats everything for us
 			-->
 			
 			</fieldset>
 			<div class="form-group">
-				<button class="btn btn-outline-success" type="submit">Apply</button>
+				<a class="btn btn-outline-secondary" href="{% url 'publication-detail-page' view.kwargs.slug view.kwargs.pk %}">Cancel</a>
+				<a class="btn btn-outline-danger" href="{% url 'publications-page' %}">Delete</a>
+				<button class="btn btn-outline-success" type="submit">Next</button>
 			</div>	
-				PK is: {{ test.pk }}
 		</form>
 	</div>
 	<script type="text/javascript">
 		$(function(){
 			/*Disable all options except the pre-populated one (i.e. the publication  that the user created previously*/
-			$('#id_publication').children().not('[selected]').prop('disabled', true);
+			$('#id_publication').children().not('[selected]').hide();
 		});
 	</script>
 {% endblock content  %}
